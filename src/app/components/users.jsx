@@ -6,6 +6,7 @@ import User from "./user";
 import api from "../api";
 import GroupList from "./groupList";
 import SearchStatus from "./searchStatus";
+import _ from "lodash";
 
 const Users = ({ users: allUsers, ...rest }) => {
     const [currentPage, setCurrentPage] = useState(1);
@@ -31,11 +32,7 @@ const Users = ({ users: allUsers, ...rest }) => {
     };
 
     const filteredUsers = selectedProf
-        ? allUsers.filter(
-              (user) =>
-                  JSON.stringify(user.profession) ===
-                  JSON.stringify(selectedProf)
-          )
+        ? allUsers.filter((user) => _.isEqual(user.profession, selectedProf))
         : allUsers;
     const count = filteredUsers.length;
     const usersCrop = paginate(filteredUsers, currentPage, pageSize);
