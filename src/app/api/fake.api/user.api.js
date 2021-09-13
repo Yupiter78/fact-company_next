@@ -1,5 +1,4 @@
-import { professions } from "./professions.api";
-
+import { professionsObject as professions } from "./professions.api";
 const qualities = {
     tedious: {
         _id: "67rdca3eeb7f6fgeed471198",
@@ -139,4 +138,6 @@ const fetchAll = () =>
         }, 2000);
     });
 
-export default { fetchAll };
+export default {
+    fetchAll
+};
