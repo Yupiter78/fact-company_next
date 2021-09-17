@@ -40,7 +40,7 @@ const Users = ({ users: allUsers, ...rest }) => {
         ? allUsers.filter((user) => _.isEqual(user.profession, selectedProf))
         : allUsers;
     const count = filteredUsers.length;
-    const sortedUsers = _.orderBy(filteredUsers, [sortBy.iter], [sortBy.order]);
+    const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
     const usersCrop = paginate(sortedUsers, currentPage, pageSize);
     const clearFilter = () => {
         setSelectedProf();
