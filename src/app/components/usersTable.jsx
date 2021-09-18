@@ -1,10 +1,10 @@
 import React from "react";
-// import User from "./user";
 import PropTypes from "prop-types";
 import TableHeader from "./tableHeader";
 import TableBody from "./tableBody";
 import BookMark from "./bookmark";
 import QualitiesList from "./qualitiesList";
+import Table from "./table";
 
 const UsersTable = ({
     users,
@@ -47,15 +47,15 @@ const UsersTable = ({
         }
     };
     return (
-        <table className="table">
+        <Table
+            onSort={onSort}
+            selectedSort={selectedSort}
+            columns={columns}
+            data={users}
+        >
             <TableHeader {...{ onSort, selectedSort, columns }} />
             <TableBody {...{ columns, data: users }} />
-            {/* <tbody>
-                {users.map((user) => (
-                    <User {...rest} {...user} key={user._id} />
-                ))}
-            </tbody> */}
-        </table>
+        </Table>
     );
 };
 
