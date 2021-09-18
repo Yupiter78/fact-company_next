@@ -12,6 +12,17 @@ const TableHeader = ({ selectedSort, onSort, columns }) => {
             onSort({ path: item, order: "asc" });
         }
     };
+
+    const headerToggleArrow = (item) => {
+        if (item === selectedSort.path) {
+            return selectedSort.order === "asc" ? (
+                <i className={"bi bi-caret-up-fill"} />
+            ) : (
+                <i className={"bi bi-caret-down-fill"} />
+            );
+        }
+    };
+
     return (
         <thead>
             <tr>
@@ -27,6 +38,8 @@ const TableHeader = ({ selectedSort, onSort, columns }) => {
                         scope="col"
                     >
                         {columns[column].name}
+
+                        {headerToggleArrow(columns[column].path)}
                     </th>
                 ))}
                 {/* <th onClick={() => handleSort("name")} scope="col">

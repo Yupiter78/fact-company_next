@@ -10,13 +10,12 @@ const UsersTable = ({
     onSort,
     selectedSort,
     onToggleBookMark,
-    onDelete,
-    ...rest
+    onDelete
 }) => {
     const columns = {
         name: { path: "name", name: "Имя" },
         qualities: { name: "Качества" },
-        profession: { path: "profession.name", name: "Профессия" },
+        professions: { path: "profession.name", name: "Профессия" },
         completedMeetings: {
             path: "completedMeetings",
             name: "Встретился, раз"

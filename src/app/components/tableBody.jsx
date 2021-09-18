@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 
 const TableBody = ({ data, columns }) => {
+    console.log(data);
     const renderContent = (item, column) => {
         if (columns[column].component) {
             const component = columns[column].component;

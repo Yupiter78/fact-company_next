@@ -29,6 +29,7 @@ module.exports = {
             {
                 allowTemplateLiterals: true
             }
-        ]
+        ],
+        "multiline-ternary": [0]
     }
 };
