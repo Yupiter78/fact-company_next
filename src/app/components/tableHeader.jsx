@@ -13,8 +13,10 @@ const TableHeader = ({ selectedSort, onSort, columns }) => {
         }
     };
 
-    const headerToggleArrow = (item) => {
-        if (item === selectedSort.path) {
+    const toggleTitleArrow = (item) => {
+        console.log("selectedSort.path:", selectedSort.path);
+        console.log("item:", item);
+        if (selectedSort.path === item) {
             return selectedSort.order === "asc" ? (
                 <i className={"bi bi-caret-up-fill"} />
             ) : (
@@ -38,27 +40,9 @@ const TableHeader = ({ selectedSort, onSort, columns }) => {
                         scope="col"
                     >
                         {columns[column].name}
-
-                        {headerToggleArrow(columns[column].path)}
+                        {toggleTitleArrow(columns[column].path)}
                     </th>
                 ))}
-                {/* <th onClick={() => handleSort("name")} scope="col">
-                    Имя
-                </th>
-                <th scope="col">Качества</th>
-                <th onClick={() => handleSort("profession.name")} scope="col">
-                    Профессия
-                </th>
-                <th onClick={() => handleSort("completedMeetings")} scope="col">
-                    Встретился, раз
-                </th>
-                <th onClick={() => handleSort("rate")} scope="col">
-                    Оценка
-                </th>
-                <th onClick={() => handleSort("bookmark")} scope="col">
-                    Избранное
-                </th>
-                <th /> */}
             </tr>
         </thead>
     );
