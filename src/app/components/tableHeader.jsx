@@ -16,9 +16,9 @@ const TableHeader = ({ selectedSort, onSort, columns }) => {
     const toggleTitleArrow = (item) => {
         if (selectedSort.path === item) {
             return selectedSort.order === "asc" ? (
-                <i className={"bi bi-caret-up-fill"} />
+                <i className="bi bi-caret-up-fill" />
             ) : (
-                <i className={"bi bi-caret-down-fill"} />
+                <i className="bi bi-caret-down-fill" />
             );
         }
     };
