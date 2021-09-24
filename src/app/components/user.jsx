@@ -11,8 +11,7 @@ const User = () => {
     useEffect(() => {
         api.users.getById(userId).then((user) => setUser(user));
     }, []);
-
-    return <>{user ? <UserPage user={user} /> : <SplashScreen />}</>;
+    return <>{user ? <UserPage {...user} /> : <SplashScreen />}</>;
 };
 
 export default User;

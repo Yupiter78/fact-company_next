@@ -3,8 +3,7 @@ import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import QualitiesList from "./qualitiesList";
 
-const UserPage = ({ user }) => {
-    const { name, profession, rate, completedMeetings, qualities } = user;
+const UserPage = ({ name, profession, rate, completedMeetings, qualities }) => {
     const history = useHistory();
     const handleUsers = () => {
         history.push("/users");
@@ -36,7 +35,11 @@ const UserPage = ({ user }) => {
 };
 
 UserPage.propTypes = {
-    user: PropTypes.object.isRequired
+    name: PropTypes.string.isRequired,
+    profession: PropTypes.object.isRequired,
+    rate: PropTypes.number.isRequired,
+    completedMeetings: PropTypes.number.isRequired,
+    qualities: PropTypes.array.isRequired
 };
 
 export default UserPage;
