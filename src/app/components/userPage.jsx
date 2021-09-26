@@ -1,45 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
+import api from "../api";
 import QualitiesList from "./qualitiesList";
 
-const UserPage = ({ name, profession, rate, completedMeetings, qualities }) => {
+const UserPage = ({ userId }) => {
     const history = useHistory();
-    const handleUsers = () => {
+    const [user, setUser] = useState();
+    useEffect(() => {
+        api.users.getById(userId).then((data) => setUser(data));
+    });
+    const handleClick = () => {
         history.push("/users");
     };
-    return (
-        <div className="card">
-            <div className="card-body">
-                <h5 className="card-title">
-                    <span className="fs-2">{name}</span>
-                </h5>
-                <h5 className="card-title">
-                    <span className="fs-3">Профессия: {profession.name}</span>
-                </h5>
-                <p className="card-text mb-1">
-                    <span className="fs-6">
-                        Встретился, раз: {completedMeetings}
-                    </span>
-                </p>
-                <p className="card-text">
-                    <span className="fs-3">Оценка: {rate} / 5</span>
-                </p>
-                <div className="mb-4">
-                    <QualitiesList qualities={qualities} />
-                </div>
-                <button onClick={handleUsers}>Все пользователи</button>
+    if (user) {
+        return (
+            <div>
+                <h1> {user.name}</h1>
+                <h2>Профессия: {user.profession.name}</h2>
+                <QualitiesList qualities={user.qualities} />
+                <p>completedMeetings: {user.completedMeetings}</p>
+                <h2>Rate: {user.rate}</h2>
+                <button onClick={handleClick}> Все Пользователи</button>
             </div>
-        </div>
-    );
+        );
+    } else {
+        return <h1>Loading</h1>;
+    }
 };
 
 UserPage.propTypes = {
-    name: PropTypes.string.isRequired,
-    profession: PropTypes.object.isRequired,
-    rate: PropTypes.number.isRequired,
-    completedMeetings: PropTypes.number.isRequired,
-    qualities: PropTypes.array.isRequired
+    userId: PropTypes.string.isRequired
 };
 
 export default UserPage;
