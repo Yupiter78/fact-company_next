@@ -1,12 +1,21 @@
 import React, { useState } from "react";
 
 const Login = () => {
-    const [email] = useState();
+    const [email, setEmail] = useState("");
+    const handleChange = ({ target }) => {
+        setEmail(target.value);
+        console.log("event.target.value:", target.value);
+    };
     return (
         <form action="">
             <div>
                 <label htmlFor="email">Email</label>
-                <input type="text" id="email" value={email} />
+                <input
+                    type="text"
+                    id="email"
+                    value={email}
+                    onChange={handleChange}
+                />
             </div>
             <div>
                 <label htmlFor="password">Password</label>
