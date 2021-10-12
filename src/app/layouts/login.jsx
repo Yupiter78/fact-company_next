@@ -13,7 +13,10 @@ const Login = () => {
     };
 
     const validatorConfig = {
-        email: { isRequired: { message: "email isRequired" } },
+        email: {
+            isRequired: { message: "email isRequired" },
+            isEmail: { message: "Email enter uncorrect" }
+        },
         password: { isRequired: { message: "password isRequired" } }
     };
     useEffect(() => {
