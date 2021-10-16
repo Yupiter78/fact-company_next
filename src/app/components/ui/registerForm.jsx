@@ -21,14 +21,12 @@ const RegisterForm = () => {
         api.professions.fetchAll().then((data) => setProfessions(data));
         api.qualities.fetchAll().then((data) => setQualities(data));
     }, []);
-    const handleChange = ({ target }) => {
+    const handleChange = (target) => {
         console.log("target:", target);
-        if (target) {
-            setData((prevState) => ({
-                ...prevState,
-                [target.name]: target.value
-            }));
-        }
+        setData((prevState) => ({
+            ...prevState,
+            [target.name]: target.value
+        }));
     };
 
     const validatorConfig = {
@@ -94,6 +92,7 @@ const RegisterForm = () => {
                 error={errors.profession}
             />
             <RadioField
+                label="Choose your gender"
                 options={[
                     { name: "Male", value: "male" },
                     { name: "Female", value: "female" },
@@ -103,7 +102,12 @@ const RegisterForm = () => {
                 name="sex"
                 onChange={handleChange}
             />
-            <MultiSelectField options={qualities} onChange={handleChange} />
+            <MultiSelectField
+                label="Choose your qualities"
+                options={qualities}
+                onChange={handleChange}
+                name="qualities"
+            />
             <button
                 type="submit"
                 disabled={!isValid}
