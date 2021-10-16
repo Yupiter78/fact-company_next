@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { validator } from "../../utils/validator";
 import TextField from "../common/form/textField";
+import api from "../../api";
+import SelectField from "../common/form/selectField";
 
 const RegisterForm = () => {
-    const [data, setData] = useState({ email: "", password: "" });
+    const [data, setData] = useState({
+        email: "",
+        password: "",
+        profession: ""
+    });
     const [errors, setErrors] = useState({});
+    const [professions, setProfessions] = useState();
+    useEffect(() => {
+        api.professions.fetchAll().then((data) => setProfessions(data));
+    }, []);
     const handleChange = ({ target }) => {
         setData((prevState) => ({
             ...prevState,
@@ -29,6 +39,9 @@ const RegisterForm = () => {
                 message: "password must be at least 8 characters long",
                 value: 8
             }
+        },
+        profession: {
+            isRequired: { message: " Be sure to choose your profession" }
         }
     };
     useEffect(() => {
@@ -62,6 +75,14 @@ const RegisterForm = () => {
                 value={data.password}
                 onChange={handleChange}
                 error={errors.password}
+            />
+            <SelectField
+                label="Choose your profession"
+                defaultOption="Choose..."
+                options={professions}
+                onChange={handleChange}
+                value={data.profession}
+                error={errors.profession}
             />
             <button
                 type="submit"
