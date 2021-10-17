@@ -16,10 +16,9 @@ const LoginForm = () => {
             [target.name]: target.value
         }));
     };
-
     const validatorConfig = {
         email: {
-            isRequired: { message: "email isRequired" },
+            isRequired: { message: "mail isRequired" },
             isEmail: { message: "Email entered incorrectly" }
         },
         password: {

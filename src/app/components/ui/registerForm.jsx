@@ -50,6 +50,12 @@ const RegisterForm = () => {
         },
         profession: {
             isRequired: { message: " Be sure to choose your profession" }
+        },
+        license: {
+            isRequired: {
+                message:
+                    "You cannot use our service without confirming the license agreement"
+            }
         }
     };
     useEffect(() => {
@@ -113,6 +119,7 @@ const RegisterForm = () => {
                 value={data.license}
                 onChange={handleChange}
                 name="license"
+                error={errors.license}
             >
                 Confirm <a>license agreement</a>
             </CheckBoxField>
