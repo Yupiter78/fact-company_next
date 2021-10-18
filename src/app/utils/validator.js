@@ -8,7 +8,6 @@ export function validator(data, config) {
                 if (typeof data === "boolean") {
                     statusValidate = !data;
                 } else {
-                    console.log("data_validate:", data);
                     statusValidate = data.trim() === "";
                 }
                 break;

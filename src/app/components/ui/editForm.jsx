@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import api from "../../api";
 import { validator } from "../../utils/validator";
 import TextField from "../common/form/textField";
@@ -9,10 +9,7 @@ import MultiSelectField from "../common/form/multiSelectField";
 import PropTypes from "prop-types";
 
 const EditForm = ({ user }) => {
-    const { userId } = useParams();
     const history = useHistory();
-    console.log("user__start:", user);
-    console.log("userId:", userId);
     const [data, setData] = useState({
         name: user.name,
         email: user.email || "",
@@ -23,8 +20,6 @@ const EditForm = ({ user }) => {
             label: quality.name
         }))
     });
-    console.log("data******:", data);
-    console.log("user__first:", user);
     const [qualities, setQualities] = useState();
     const [professions, setProfessions] = useState();
     const [errors, setErrors] = useState({});
@@ -32,20 +27,6 @@ const EditForm = ({ user }) => {
         api.professions.fetchAll().then((data) => setProfessions(data));
         api.qualities.fetchAll().then((data) => setQualities(data));
     }, []);
-    console.log("user_____data:", user);
-    // const handleChange = (target) => {
-    //     setData((prevState) => ({
-    //         ...prevState,
-    //         [target.name]: target.value
-    //     }));
-    // };
-    // const handleSubmit = (event) => {
-    //     event.preventDefault();
-    //     const isValid = validate();
-    //     if (!isValid) return;
-    //     console.log("data:", data);
-    //     history.goBack();
-    // };
 
     const handleChange = (target) => {
         setData((prevState) => ({
@@ -76,18 +57,11 @@ const EditForm = ({ user }) => {
         return Object.keys(errors).length === 0;
     };
     const isValid = Object.keys(errors).length === 0;
-    console.log("professions___prev:", professions);
     const handleSubmit = (event) => {
         event.preventDefault();
         const isValid = validate();
         if (!isValid) return;
-        console.log(
-            "Object.keys(professions).map((p) => professions[p]).find((p) => p._id === data.profession):",
-            Object.keys(professions)
-                .map((p) => professions[p])
-                .find((p) => p._id === data.profession)
-        );
-        console.log("data.profession:", data.profession);
+
         const profession = {
             _id: data.profession,
             name: Object.keys(professions)
