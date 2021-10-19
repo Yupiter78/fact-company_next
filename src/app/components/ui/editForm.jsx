@@ -88,7 +88,7 @@ const EditForm = ({ user }) => {
                 disabled={!professions}
             >
                 <i className="bi bi-caret-left" />
-                Назад
+                Come back
             </button>
             <div className="container mt-5">
                 <div className="row">

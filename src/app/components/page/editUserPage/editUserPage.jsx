@@ -6,14 +6,9 @@ import EditForm from "../../ui/editForm";
 const EditUserPage = () => {
     const { userId } = useParams();
     const [user, setUser] = useState();
-
     useEffect(() => {
         api.users.getById(userId).then((data) => setUser(data));
     }, []);
-
-    return <>{user ? <EditForm user={user} /> : <h1>Loading</h1>}</>;
+    return <>{user ? <EditForm user={user} /> : <h3>Loading...</h3>}</>;
 };
-
-// EditUserPage.propTypes = {};
-
 export default EditUserPage;

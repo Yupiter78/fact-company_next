@@ -17,6 +17,7 @@ const SelectField = ({
                   value: options[optionName]._id
               }))
             : options;
+    console.log("optionsArray:", optionsArray);
     const handleChange = ({ target }) => {
         onChange({ name: target.name, value: target.value });
     };
@@ -42,7 +43,10 @@ const SelectField = ({
                     </option>
                     {optionsArray &&
                         optionsArray.map((option) => (
-                            <option key={option._id} value={option._id}>
+                            <option
+                                key={option.value || option._id}
+                                value={option.value}
+                            >
                                 {option.name}
                             </option>
                         ))}

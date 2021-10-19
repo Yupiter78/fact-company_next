@@ -77,7 +77,7 @@ const UserCard = ({ user }) => {
                 <div className="card mb-3">
                     <div className="card-body d-flex flex-column justify-content-center text-center">
                         <h5 className="card-title">
-                            <span>Качества</span>
+                            <span>Qualities</span>
                         </h5>
                         <p className="card-text">
                             <QualitiesList qualities={qualities} />
@@ -87,7 +87,7 @@ const UserCard = ({ user }) => {
                 <div className="card mb-3">
                     <div className="card-body d-flex flex-column justify-content-center text-center">
                         <h5 className="card-title">
-                            <span>Завершенные встречи</span>
+                            <span>Completed meetings</span>
                         </h5>
                         <h1 className="display-1">{completedMeetings}</h1>
                     </div>
@@ -97,7 +97,7 @@ const UserCard = ({ user }) => {
                 {users ? (
                     <CommentForm id={_id} users={users} add={addComment} />
                 ) : (
-                    <h1>Loading...</h1>
+                    <h3>Loading...</h3>
                 )}
                 {users && comments ? (
                     <Comments
@@ -107,7 +107,7 @@ const UserCard = ({ user }) => {
                         remove={removeComment}
                     />
                 ) : (
-                    <h1>Loading...</h1>
+                    <h3>Loading...</h3>
                 )}
             </div>
         </div>

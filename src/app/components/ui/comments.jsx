@@ -19,14 +19,14 @@ const Comments = ({ users, comments, remove }) => {
 
     if (!comments.length) return null;
 
-    if (!modifiedComments) return <h1>Loading...</h1>;
+    if (!modifiedComments) return <h3>Loading...</h3>;
 
     const sortedComments = modifiedComments.sort((a, b) => b.date - a.date);
 
     return (
         <div className="card mb-3">
             <div className="card-body">
-                <h2>Комментарии</h2>
+                <h2>Comments</h2>
                 <hr />
                 {sortedComments.map((comment) => (
                     <Comment

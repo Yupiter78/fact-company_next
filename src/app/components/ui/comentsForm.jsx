@@ -13,23 +13,22 @@ const CommentForm = ({ id, users, add }) => {
     }, [data]);
 
     const handleChange = (target) => {
-        console.log("target:", target);
         setData((prevState) => ({ ...prevState, [target.name]: target.value }));
     };
 
     const validatorConfig = {
         comment: {
             isRequired: {
-                message: "Поле сообщение не может быть пустым"
+                message: "Input field cannot be empty"
             },
             min: {
-                message: "Сообщение должно содержать не менее 3 символов",
+                message: "Message must contain at least 3 characters",
                 value: 3
             }
         },
         user: {
             isRequired: {
-                message: "Выберите имя пользователя"
+                message: "Select username"
             }
         }
     };
@@ -54,21 +53,18 @@ const CommentForm = ({ id, users, add }) => {
             pageId: id,
             content: data.comment
         };
-        console.log("comment", comment);
-
         add(comment);
         clear();
     };
-    console.log("data", data);
 
     return (
         <div className="card mb-2">
             <div className="card-body">
                 <div>
-                    <h2>Новый комментарий</h2>
+                    <h2>New comment</h2>
                     <SelectField
                         label=""
-                        defaultOption="Выбрать..."
+                        defaultOption="Choose..."
                         options={users}
                         name="user"
                         onChange={handleChange}
@@ -77,7 +73,7 @@ const CommentForm = ({ id, users, add }) => {
                     />
                     <TextAreaField
                         onChange={handleChange}
-                        label="Сообщение"
+                        label="Message"
                         name="comment"
                         value={data.comment}
                         error={errors.comment}
@@ -89,7 +85,7 @@ const CommentForm = ({ id, users, add }) => {
                             className="btn btn-primary"
                             disabled={!isValid}
                         >
-                            Опубликовать
+                            Publish
                         </button>
                     </div>
                 </div>

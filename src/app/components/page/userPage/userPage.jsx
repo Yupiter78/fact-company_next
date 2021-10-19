@@ -11,7 +11,7 @@ const UserPage = ({ userId }) => {
     if (user) {
         return <UserCard user={user} />;
     } else {
-        return <h1>Loading...</h1>;
+        return <h3>Loading...</h3>;
     }
 };
 
