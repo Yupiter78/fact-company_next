@@ -81,62 +81,72 @@ const EditForm = ({ user }) => {
         history.goBack();
     };
     return (
-        <div className="container mt-5">
-            <div className="row">
-                <div className="col-md-6 offset-md-3 shadow p-4">
-                    <h3 className="mb-4">Changing user data</h3>
-                    <form onSubmit={handleSubmit}>
-                        <TextField
-                            label="Name"
-                            name="name"
-                            value={data.name}
-                            onChange={handleChange}
-                            error={errors.name}
-                        />
-                        <TextField
-                            label="Email"
-                            name="email"
-                            value={data.email}
-                            onChange={handleChange}
-                            error={errors.email}
-                        />
-                        <SelectField
-                            label="Choose your profession"
-                            defaultOption="Choose..."
-                            options={professions}
-                            onChange={handleChange}
-                            value={data.profession}
-                            error={errors.profession}
-                        />
-                        <RadioField
-                            label="Choose your gender"
-                            options={[
-                                { name: "Male", value: "male" },
-                                { name: "Female", value: "female" },
-                                { name: "Other", value: "other" }
-                            ]}
-                            value={data.sex}
-                            name="sex"
-                            onChange={handleChange}
-                        />
-                        <MultiSelectField
-                            label="Choose your qualities"
-                            options={qualities}
-                            onChange={handleChange}
-                            name="qualities"
-                            defaultValue={data.qualities}
-                        />
-                        <button
-                            type="submit"
-                            disabled={!isValid}
-                            className="btn btn-primary w-100 mx-auto"
-                        >
-                            Update
-                        </button>
-                    </form>
+        <>
+            <button
+                onClick={() => history.goBack()}
+                className="btn btn-primary pe-4"
+                disabled={!professions}
+            >
+                <i className="bi bi-caret-left" />
+                Назад
+            </button>
+            <div className="container mt-5">
+                <div className="row">
+                    <div className="col-md-6 offset-md-3 shadow p-4">
+                        <h3 className="mb-4">Changing user data</h3>
+                        <form onSubmit={handleSubmit}>
+                            <TextField
+                                label="Name"
+                                name="name"
+                                value={data.name}
+                                onChange={handleChange}
+                                error={errors.name}
+                            />
+                            <TextField
+                                label="Email"
+                                name="email"
+                                value={data.email}
+                                onChange={handleChange}
+                                error={errors.email}
+                            />
+                            <SelectField
+                                label="Choose your profession"
+                                defaultOption="Choose..."
+                                options={professions}
+                                onChange={handleChange}
+                                value={data.profession}
+                                error={errors.profession}
+                            />
+                            <RadioField
+                                label="Choose your gender"
+                                options={[
+                                    { name: "Male", value: "male" },
+                                    { name: "Female", value: "female" },
+                                    { name: "Other", value: "other" }
+                                ]}
+                                value={data.sex}
+                                name="sex"
+                                onChange={handleChange}
+                            />
+                            <MultiSelectField
+                                label="Choose your qualities"
+                                options={qualities}
+                                onChange={handleChange}
+                                name="qualities"
+                                defaultValue={data.qualities}
+                            />
+                            <button
+                                type="submit"
+                                disabled={!isValid}
+                                className="btn btn-primary w-100 mx-auto"
+                            >
+                                Update
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 EditForm.propTypes = {

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 const SelectField = ({
     label,
+    name,
     value,
     onChange,
     defaultOption,
@@ -32,7 +33,7 @@ const SelectField = ({
                 <select
                     className={getInputClasses()}
                     id="validationCustom04"
-                    name="profession"
+                    name={name}
                     value={value}
                     onChange={handleChange}
                 >
@@ -41,7 +42,7 @@ const SelectField = ({
                     </option>
                     {optionsArray &&
                         optionsArray.map((option) => (
-                            <option key={option.value} value={option.value}>
+                            <option key={option._id} value={option._id}>
                                 {option.name}
                             </option>
                         ))}
@@ -54,6 +55,7 @@ const SelectField = ({
 SelectField.propTypes = {
     defaultOption: PropTypes.string,
     label: PropTypes.string,
+    name: PropTypes.string,
     value: PropTypes.string,
     onChange: PropTypes.func,
     error: PropTypes.string,
