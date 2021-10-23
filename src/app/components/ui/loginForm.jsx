@@ -16,21 +16,28 @@ const LoginForm = () => {
             [target.name]: target.value
         }));
     };
-    const validatorConfig = {
+
+    const validatorConfog = {
         email: {
-            isRequired: { message: "mail isRequired" },
-            isEmail: { message: "Email entered incorrectly" }
+            isRequired: {
+                message: "Электронная почта обязательна для заполнения"
+            },
+            isEmail: {
+                message: "Email введен некорректно"
+            }
         },
         password: {
-            isRequired: { message: "password isRequired" },
+            isRequired: {
+                message: "Пароль обязателкн для заполнения"
+            },
             isCapitalSymbol: {
-                message: "password must contain at least one uppercase letter"
+                message: "Пароль должен содержать хотя бы одну заглавную букву"
             },
             isContainDigit: {
-                message: "password must contain at least one number"
+                message: "Пароль должен содержать хотя бы одно число"
             },
             min: {
-                message: "password must be at least 8 characters long",
+                message: "Пароль должен состаять миниму из 8 символов",
                 value: 8
             }
         }
@@ -39,28 +46,30 @@ const LoginForm = () => {
         validate();
     }, [data]);
     const validate = () => {
-        const errors = validator(data, validatorConfig);
+        const errors = validator(data, validatorConfog);
+
         setErrors(errors);
         return Object.keys(errors).length === 0;
     };
     const isValid = Object.keys(errors).length === 0;
-    const handleSubmit = (event) => {
-        event.preventDefault();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
-        console.log("data:", data);
+        console.log(data);
     };
     return (
         <form onSubmit={handleSubmit}>
             <TextField
-                label="Email"
+                label="Электронная почта"
                 name="email"
                 value={data.email}
                 onChange={handleChange}
                 error={errors.email}
             />
             <TextField
-                label="Password"
+                label="Пароль"
                 type="password"
                 name="password"
                 value={data.password}
@@ -72,7 +81,7 @@ const LoginForm = () => {
                 onChange={handleChange}
                 name="stayOn"
             >
-                Stay on in the system
+                Оставаться в системе
             </CheckBoxField>
             <button
                 type="submit"

@@ -1,9 +1,10 @@
 import React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
+
 import Users from "./layouts/users";
-import NavBar from "./components/ui/navBar";
-import Main from "./layouts/main";
 import Login from "./layouts/login";
+import Main from "./layouts/main";
+import NavBar from "./components/ui/navBar";
 
 function App() {
     return (

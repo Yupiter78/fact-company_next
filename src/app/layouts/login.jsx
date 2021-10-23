@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+import { useParams } from "react-router";
 import LoginForm from "../components/ui/loginForm";
-import { useParams } from "react-router-dom";
 import RegisterForm from "../components/ui/registerForm";
 
 const Login = () => {
@@ -8,11 +8,12 @@ const Login = () => {
     const [formType, setFormType] = useState(
         type === "register" ? type : "login"
     );
-    const toggleFormType = () => {
+    const toggleFormType = (params) => {
         setFormType((prevState) =>
             prevState === "register" ? "login" : "register"
         );
     };
+
     return (
         <div className="container mt-5">
             <div className="row">
@@ -24,6 +25,7 @@ const Login = () => {
                             <p>
                                 Already have account?{" "}
                                 <a role="button" onClick={toggleFormType}>
+                                    {" "}
                                     Sign In
                                 </a>
                             </p>
@@ -35,6 +37,7 @@ const Login = () => {
                             <p>
                                 Dont have account?{" "}
                                 <a role="button" onClick={toggleFormType}>
+                                    {" "}
                                     Sign Up
                                 </a>
                             </p>
@@ -45,5 +48,4 @@ const Login = () => {
         </div>
     );
 };
-
 export default Login;

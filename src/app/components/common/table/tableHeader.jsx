@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-
-const TableHeader = ({ selectedSort, onSort, columns }) => {
+const TableHeader = ({ onSort, selectedSort, columns }) => {
     const handleSort = (item) => {
         if (selectedSort.path === item) {
             onSort({
@@ -12,15 +11,15 @@ const TableHeader = ({ selectedSort, onSort, columns }) => {
             onSort({ path: item, order: "asc" });
         }
     };
-
-    const toggleTitleArrow = (item) => {
-        if (selectedSort.path === item) {
-            return selectedSort.order === "asc" ? (
-                <i className="bi bi-caret-up-fill" />
-            ) : (
-                <i className="bi bi-caret-down-fill" />
-            );
+    const rendeSortArrow = (selectedSort, currentPath) => {
+        if (selectedSort.path === currentPath) {
+            if (selectedSort.order === "asc") {
+                return <i className="bi bi-caret-down-fill"></i>;
+            } else {
+                return <i className="bi bi-caret-up-fill"></i>;
+            }
         }
+        return null;
     };
 
     return (
@@ -29,26 +28,25 @@ const TableHeader = ({ selectedSort, onSort, columns }) => {
                 {Object.keys(columns).map((column) => (
                     <th
                         key={column}
-                        onClick={() =>
+                        onClick={
                             columns[column].path
-                                ? handleSort(columns[column].path)
+                                ? () => handleSort(columns[column].path)
                                 : undefined
                         }
                         {...{ role: columns[column].path && "button" }}
                         scope="col"
                     >
-                        {columns[column].name}
-                        {toggleTitleArrow(columns[column].path)}
+                        {columns[column].name}{" "}
+                        {rendeSortArrow(selectedSort, columns[column].path)}
                     </th>
                 ))}
             </tr>
         </thead>
     );
 };
-
 TableHeader.propTypes = {
-    selectedSort: PropTypes.object.isRequired,
     onSort: PropTypes.func.isRequired,
+    selectedSort: PropTypes.object.isRequired,
     columns: PropTypes.object.isRequired
 };
 

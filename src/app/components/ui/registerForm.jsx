@@ -3,7 +3,7 @@ import { validator } from "../../utils/validator";
 import TextField from "../common/form/textField";
 import api from "../../api";
 import SelectField from "../common/form/selectField";
-import RadioField from "../common/form/radioField";
+import RadioField from "../common/form/radio.Field";
 import MultiSelectField from "../common/form/multiSelectField";
 import CheckBoxField from "../common/form/checkBoxField";
 
@@ -14,13 +14,13 @@ const RegisterForm = () => {
         profession: "",
         sex: "male",
         qualities: [],
-        license: false
+        licence: false
     });
     const [qualities, setQualities] = useState({});
+    const [professions, setProfession] = useState([]);
     const [errors, setErrors] = useState({});
-    const [professions, setProfessions] = useState();
     useEffect(() => {
-        api.professions.fetchAll().then((data) => setProfessions(data));
+        api.professions.fetchAll().then((data) => setProfession(data));
         api.qualities.fetchAll().then((data) => setQualities(data));
     }, []);
     const handleChange = (target) => {
@@ -29,32 +29,39 @@ const RegisterForm = () => {
             [target.name]: target.value
         }));
     };
-
-    const validatorConfig = {
+    const validatorConfog = {
         email: {
-            isRequired: { message: "email isRequired" },
-            isEmail: { message: "Email entered incorrectly" }
+            isRequired: {
+                message: "Электронная почта обязательна для заполнения"
+            },
+            isEmail: {
+                message: "Email введен некорректно"
+            }
         },
         password: {
-            isRequired: { message: "password isRequired" },
+            isRequired: {
+                message: "Пароль обязательна для заполнения"
+            },
             isCapitalSymbol: {
-                message: "password must contain at least one uppercase letter"
+                message: "Пароль должен содержать хотя бы одну заглавную букву"
             },
             isContainDigit: {
-                message: "password must contain at least one number"
+                message: "Пароль должен содержать хотя бы одно число"
             },
             min: {
-                message: "password must be at least 8 characters long",
+                message: "Пароль должен состаять миниму из 8 символов",
                 value: 8
             }
         },
         profession: {
-            isRequired: { message: " Be sure to choose your profession" }
+            isRequired: {
+                message: "Обязательно выберите вашу профессию"
+            }
         },
-        license: {
+        licence: {
             isRequired: {
                 message:
-                    "You cannot use our service without confirming the license agreement"
+                    "Вы не можете использовать наш сервис без подтреврждения лицензионного соглашения"
             }
         }
     };
@@ -62,28 +69,29 @@ const RegisterForm = () => {
         validate();
     }, [data]);
     const validate = () => {
-        const errors = validator(data, validatorConfig);
+        const errors = validator(data, validatorConfog);
         setErrors(errors);
         return Object.keys(errors).length === 0;
     };
     const isValid = Object.keys(errors).length === 0;
-    const handleSubmit = (event) => {
-        event.preventDefault();
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
-        console.log("data:", data);
+        console.log(data);
     };
     return (
         <form onSubmit={handleSubmit}>
             <TextField
-                label="Email"
+                label="Электронная почта"
                 name="email"
                 value={data.email}
                 onChange={handleChange}
                 error={errors.email}
             />
             <TextField
-                label="Password"
+                label="Пароль"
                 type="password"
                 name="password"
                 value={data.password}
@@ -91,16 +99,14 @@ const RegisterForm = () => {
                 error={errors.password}
             />
             <SelectField
-                label="Choose your profession"
+                label="Выбери свою профессию"
                 defaultOption="Choose..."
-                name="profession"
                 options={professions}
                 onChange={handleChange}
                 value={data.profession}
                 error={errors.profession}
             />
             <RadioField
-                label="Choose your gender"
                 options={[
                     { name: "Male", value: "male" },
                     { name: "Female", value: "female" },
@@ -109,20 +115,21 @@ const RegisterForm = () => {
                 value={data.sex}
                 name="sex"
                 onChange={handleChange}
+                label="Выберите ваш пол"
             />
             <MultiSelectField
-                label="Choose your qualities"
                 options={qualities}
                 onChange={handleChange}
                 name="qualities"
+                label="Выберите ваши качесвта"
             />
             <CheckBoxField
-                value={data.license}
+                value={data.licence}
                 onChange={handleChange}
-                name="license"
-                error={errors.license}
+                name="licence"
+                error={errors.licence}
             >
-                Confirm <a>license agreement</a>
+                Подтвердить <a>лицензионное соглашение</a>
             </CheckBoxField>
             <button
                 type="submit"
