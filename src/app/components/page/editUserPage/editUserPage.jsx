@@ -125,6 +125,7 @@ const EditUserPage = () => {
                                 defaultOption="Choose..."
                                 options={professions}
                                 onChange={handleChange}
+                                name="profession"
                                 value={data.profession}
                                 error={errors.profession}
                             />
