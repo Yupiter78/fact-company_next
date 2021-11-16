@@ -7,8 +7,7 @@ import GroupList from "../../common/groupList";
 import SearchStatus from "../../ui/searchStatus";
 import UserTable from "../../ui/usersTable";
 import _ from "lodash";
-import useUsers from "../../../hooks/useUsers";
-
+import { useUser } from "../../../hooks/useUsers";
 const UsersListPage = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [professions, setProfession] = useState();
@@ -17,7 +16,7 @@ const UsersListPage = () => {
     const [sortBy, setSortBy] = useState({ path: "name", order: "asc" });
     const pageSize = 8;
 
-    const { users } = useUsers();
+    const { users } = useUser();
     console.log(users);
 
     const handleDelete = (userId) => {
