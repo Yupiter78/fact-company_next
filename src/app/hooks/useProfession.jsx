@@ -42,7 +42,11 @@ export const ProfessionProvider = ({ children }) => {
     }
 
     const getProfession = (id) => {
-        return professions.find((profession) => profession._id === id);
+        console.log(`professions:`, professions);
+        return professions.find((profession, i) => {
+            console.log(`profession ${i}:`, profession);
+            return profession._id === id;
+        });
     };
 
     return (

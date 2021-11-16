@@ -5,6 +5,7 @@ import { useQualities } from "../../../hooks/useQualities";
 
 const QualitiesList = ({ qualities }) => {
     const { isLoading, getQuality } = useQualities();
+    console.log("qualities:", qualities);
 
     return (
         <>
