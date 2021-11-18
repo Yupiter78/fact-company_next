@@ -18,8 +18,19 @@ axios.interceptors.request.use(
     }
 );
 
+function transformData(data) {
+    return data ? Object.keys(data).map((key) => ({ ...data[key] })) : [];
+}
+
 axios.interceptors.response.use(
-    (response) => response,
+    (response) => {
+        if (configFile.isFireBase) {
+            console.log("response:", response);
+            response.data = { content: transformData(response.data) };
+            console.log("response.data:", response.data);
+        }
+        return response;
+    },
     function (error) {
         const expectedErrors =
             error.response &&
