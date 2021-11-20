@@ -5,37 +5,36 @@ import users from "../mockData/users.json";
 import httpService from "../services/http.service";
 
 const useMockData = () => {
-    const statusConstants = {
-        idle: "Not started",
-        pending: "In process",
+    const statusConsts = {
+        idle: "Not Started",
+        pending: "In Process",
         successed: "Ready",
-        error: "Error occurred"
+        error: "Error occured"
     };
     const [error, setError] = useState(null);
-    const [status, setStatus] = useState(statusConstants.idle);
+    const [status, setStatus] = useState(statusConsts.idle);
     const [progress, setProgress] = useState(0);
     const [count, setCount] = useState(0);
-    const summaryCount = professions.length + qualities.length + users.length;
+    const summuryCount = professions.length + qualities.length + users.length;
     const incrementCount = () => {
         setCount((prevState) => prevState + 1);
     };
-
     const updateProgress = () => {
-        if (count !== 0 && status === statusConstants.idle) {
-            setStatus(statusConstants.pending);
+        if (count !== 0 && status === statusConsts.idle) {
+            setStatus(statusConsts.pending);
         }
-        const newProgress = Math.floor((count / summaryCount) * 100);
+        const newProgress = Math.floor((count / summuryCount) * 100);
         if (progress < newProgress) {
             setProgress(() => newProgress);
         }
         if (newProgress === 100) {
-            setStatus(statusConstants.successed);
+            setStatus(statusConsts.successed);
         }
     };
+
     useEffect(() => {
         updateProgress();
     }, [count]);
-
     async function initialize() {
         try {
             for (const prof of professions) {
@@ -46,13 +45,13 @@ const useMockData = () => {
                 await httpService.put("user/" + user._id, user);
                 incrementCount();
             }
-            for (const quality of qualities) {
-                await httpService.put("quality/" + quality._id, quality);
+            for (const qual of qualities) {
+                await httpService.put("quality/" + qual._id, qual);
                 incrementCount();
             }
         } catch (error) {
             setError(error);
-            setStatus(statusConstants.error);
+            setStatus(statusConsts.error);
         }
     }
 

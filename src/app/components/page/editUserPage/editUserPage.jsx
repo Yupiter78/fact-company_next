@@ -54,12 +54,16 @@ const EditUserPage = () => {
             .then((data) => history.push(`/users/${data._id}`));
         console.log(data);
     };
+    const transformData = (data) => {
+        return data.map((qual) => ({ label: qual.name, value: qual._id }));
+    };
     useEffect(() => {
         setIsLoading(true);
-        api.users.getById(userId).then(({ profession, ...data }) =>
+        api.users.getById(userId).then(({ profession, qualities, ...data }) =>
             setData((prevState) => ({
                 ...prevState,
                 ...data,
+                qualities: transformData(qualities),
                 profession: profession._id
             }))
         );
@@ -123,6 +127,7 @@ const EditUserPage = () => {
                             <SelectField
                                 label="Выбери свою профессию"
                                 defaultOption="Choose..."
+                                name="profession"
                                 options={professions}
                                 onChange={handleChange}
                                 value={data.profession}

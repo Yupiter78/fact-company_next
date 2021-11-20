@@ -7,13 +7,14 @@ import Main from "./layouts/main";
 import NavBar from "./components/ui/navBar";
 import { ToastContainer } from "react-toastify";
 import { ProfessionProvider } from "./hooks/useProfession";
-import { QualityProvider } from "./hooks/useQualities";
+import { QualitiesProvider } from "./hooks/useQualities";
 
 function App() {
     return (
         <div>
             <NavBar />
-            <QualityProvider>
+
+            <QualitiesProvider>
                 <ProfessionProvider>
                     <Switch>
                         <Route
@@ -25,7 +26,7 @@ function App() {
                         <Redirect to="/" />
                     </Switch>
                 </ProfessionProvider>
-            </QualityProvider>
+            </QualitiesProvider>
 
             <ToastContainer />
         </div>
