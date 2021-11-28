@@ -27,7 +27,6 @@ const AuthProvider = ({ children }) => {
             });
             setTokens(data);
             await createUser({ _id: data.localId, email, ...rest });
-            console.log("data_signUp:", data);
         } catch (error) {
             errorCatcher(error);
             const { code, message } = error.response.data.error;
