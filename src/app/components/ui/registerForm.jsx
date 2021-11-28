@@ -7,6 +7,7 @@ import MultiSelectField from "../common/form/multiSelectField";
 import CheckBoxField from "../common/form/checkBoxField";
 import { useQualities } from "../../hooks/useQualities";
 import { useProfessions } from "../../hooks/useProfession";
+import { useAuth } from "../../hooks/useAuth";
 
 const RegisterForm = () => {
     const [data, setData] = useState({
@@ -17,13 +18,14 @@ const RegisterForm = () => {
         qualities: [],
         licence: false
     });
+
+    const { singUp } = useAuth();
     const { qualities } = useQualities();
     const qualitiesList = qualities.map(({ _id, name }) => ({
         label: name,
         value: _id
     }));
     const { professions } = useProfessions();
-    console.log("professions:", professions);
     const professionsList = professions.map(({ _id, name }) => ({
         label: name,
         value: _id
@@ -91,6 +93,7 @@ const RegisterForm = () => {
             qualities: data.qualities.map((q) => q.value)
         };
         console.log(newData);
+        singUp(newData);
     };
     return (
         <form onSubmit={handleSubmit}>
