@@ -19,13 +19,15 @@ http.interceptors.request.use(
         return Promise.reject(error);
     }
 );
+
 function transformData(data) {
-    return data
+    return data && !data._id
         ? Object.keys(data).map((key) => ({
               ...data[key]
           }))
-        : [];
+        : data;
 }
+
 http.interceptors.response.use(
     (res) => {
         if (configFile.isFireBase) {
@@ -41,7 +43,7 @@ http.interceptors.response.use(
 
         if (!expectedErrors) {
             console.log(error);
-            toast.error("Somthing was wrong. Try it later");
+            toast.error("Something was wrong. Try it later");
         }
         return Promise.reject(error);
     }
