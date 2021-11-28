@@ -30,6 +30,16 @@ const AuthProvider = ({ children }) => {
             console.log("data_signUp:", data);
         } catch (error) {
             errorCatcher(error);
+            const { code, message } = error.response.data.error;
+            console.log(code, message);
+            if (code === 400) {
+                if (message === "EMAIL_EXISTS") {
+                    // eslint-disable-next-line no-throw-literal
+                    throw {
+                        email: "User with this Email already exists"
+                    };
+                }
+            }
         }
     }
 
