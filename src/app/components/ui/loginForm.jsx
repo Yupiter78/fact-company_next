@@ -6,7 +6,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { useHistory } from "react-router-dom";
 
 const LoginForm = () => {
-    const { logIn } = useAuth();
+    const { signIn } = useAuth();
     const history = useHistory();
     const [data, setData] = useState({
         email: "",
@@ -24,24 +24,24 @@ const LoginForm = () => {
     const validatorConfig = {
         email: {
             isRequired: {
-                message: "Электронная почта обязательна для заполнения"
+                message: "Email isRequired"
             },
             isEmail: {
-                message: "Email введен некорректно"
+                message: "Email entered incorrectly"
             }
         },
         password: {
             isRequired: {
-                message: "Пароль обязателкн для заполнения"
+                message: "password isRequired"
             },
             isCapitalSymbol: {
-                message: "Пароль должен содержать хотя бы одну заглавную букву"
+                message: "password must contain at least one uppercase letter"
             },
             isContainDigit: {
-                message: "Пароль должен содержать хотя бы одно число"
+                message: "password must contain at least one number"
             },
             min: {
-                message: "Пароль должен состаять миниму из 8 символов",
+                message: "password must be at least 8 characters long",
                 value: 8
             }
         }
@@ -63,7 +63,7 @@ const LoginForm = () => {
         console.log(data);
 
         try {
-            await logIn(data);
+            await signIn(data);
             history.push("/");
         } catch (error) {
             setErrors(error);
@@ -72,14 +72,14 @@ const LoginForm = () => {
     return (
         <form onSubmit={handleSubmit}>
             <TextField
-                label="Электронная почта"
+                label="Email"
                 name="email"
                 value={data.email}
                 onChange={handleChange}
                 error={errors.email}
             />
             <TextField
-                label="Пароль"
+                label="Password"
                 type="password"
                 name="password"
                 value={data.password}
@@ -91,7 +91,7 @@ const LoginForm = () => {
                 onChange={handleChange}
                 name="stayOn"
             >
-                Оставаться в системе
+                Stay on in the system
             </CheckBoxField>
             <button
                 type="submit"
