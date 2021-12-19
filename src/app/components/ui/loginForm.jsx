@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { validator } from "../../utils/validator";
+import { validator } from "../../utils/ validator";
 import TextField from "../common/form/textField";
 import CheckBoxField from "../common/form/checkBoxField";
 import { useAuth } from "../../hooks/useAuth";
 import { useHistory } from "react-router-dom";
 
 const LoginForm = () => {
-    const { signIn } = useAuth();
-    const history = useHistory();
     const [data, setData] = useState({
         email: "",
         password: "",
         stayOn: false
     });
+    const history = useHistory();
+    const { logIn } = useAuth();
     const [errors, setErrors] = useState({});
+    const [enterError, setEnterError] = useState(null);
     const handleChange = (target) => {
         setData((prevState) => ({
             ...prevState,
             [target.name]: target.value
         }));
+        setEnterError(null);
     };
 
     const validatorConfig = {
@@ -60,13 +62,13 @@ const LoginForm = () => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
-        console.log(data);
 
         try {
-            await signIn(data);
+            await logIn(data);
             history.push("/");
         } catch (error) {
-            setErrors(error);
+            console.log("error:", error);
+            setEnterError(error.message);
         }
     };
     return (
@@ -93,9 +95,10 @@ const LoginForm = () => {
             >
                 Stay on in the system
             </CheckBoxField>
+            {enterError && <p className="text-danger">{enterError}</p>}
             <button
                 type="submit"
-                disabled={!isValid}
+                disabled={!isValid || enterError}
                 className="btn btn-primary w-100 mx-auto"
             >
                 Submit

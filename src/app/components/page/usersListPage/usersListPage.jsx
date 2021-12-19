@@ -90,7 +90,7 @@ const UsersListPage = () => {
                         className="btn btn-secondary mt-2"
                         onClick={clearFilter}
                     >
-                        Clean out
+                        Очиститть
                     </button>
                 </div>
             )}

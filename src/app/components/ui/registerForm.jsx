@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { validator } from "../../utils/validator";
+import { validator } from "../../utils/ validator";
 import TextField from "../common/form/textField";
 import SelectField from "../common/form/selectField";
 import RadioField from "../common/form/radio.Field";
@@ -14,23 +14,23 @@ const RegisterForm = () => {
     const history = useHistory();
     const [data, setData] = useState({
         email: "",
+        name: "",
         password: "",
         profession: "",
         sex: "male",
         qualities: [],
         licence: false
     });
-
-    const { singUp } = useAuth();
+    const { signUp } = useAuth();
     const { qualities } = useQualities();
-    const qualitiesList = qualities.map(({ _id, name }) => ({
-        label: name,
-        value: _id
+    const qualitiesList = qualities.map((q) => ({
+        label: q.name,
+        value: q._id
     }));
     const { professions } = useProfessions();
-    const professionsList = professions.map(({ _id, name }) => ({
-        label: name,
-        value: _id
+    const professionsList = professions.map((p) => ({
+        label: p.name,
+        value: p._id
     }));
     const [errors, setErrors] = useState({});
 
@@ -47,6 +47,15 @@ const RegisterForm = () => {
             },
             isEmail: {
                 message: "Email entered incorrectly"
+            }
+        },
+        name: {
+            isRequired: {
+                message: "name isRequired"
+            },
+            min: {
+                message: "name must be at least 3 characters long",
+                value: 3
             }
         },
         password: {
@@ -94,14 +103,14 @@ const RegisterForm = () => {
             ...data,
             qualities: data.qualities.map((q) => q.value)
         };
-
         try {
-            await singUp(newData);
+            await signUp(newData);
             history.push("/");
         } catch (error) {
             setErrors(error);
         }
     };
+
     return (
         <form onSubmit={handleSubmit}>
             <TextField
@@ -110,6 +119,13 @@ const RegisterForm = () => {
                 value={data.email}
                 onChange={handleChange}
                 error={errors.email}
+            />
+            <TextField
+                label="Name"
+                name="name"
+                value={data.name}
+                onChange={handleChange}
+                error={errors.name}
             />
             <TextField
                 label="Password"

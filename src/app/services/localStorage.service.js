@@ -6,13 +6,11 @@ export function setTokens({ refreshToken, idToken, expiresIn = 3600 }) {
     const expiresDate = new Date().getTime() + expiresIn * 1000;
     localStorage.setItem(TOKEN_KEY, idToken);
     localStorage.setItem(REFRESH_KEY, refreshToken);
-    localStorage.setItem(EXPIRES_KEY, expiresDate.toString());
+    localStorage.setItem(EXPIRES_KEY, expiresDate);
 }
-
 export function getAccessToken() {
     return localStorage.getItem(TOKEN_KEY);
 }
-
 export function getRefreshToken() {
     return localStorage.getItem(REFRESH_KEY);
 }
@@ -27,5 +25,4 @@ const localStorageService = {
     getRefreshToken,
     getTokenExpiresDate
 };
-
 export default localStorageService;
