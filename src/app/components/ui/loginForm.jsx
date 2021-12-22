@@ -12,6 +12,10 @@ const LoginForm = () => {
         stayOn: false
     });
     const history = useHistory();
+    console.log(
+        "history.location.state.from.pathname:",
+        history.location.state.from.pathname
+    );
     const { logIn } = useAuth();
     const [errors, setErrors] = useState({});
     const [enterError, setEnterError] = useState(null);
@@ -65,7 +69,11 @@ const LoginForm = () => {
 
         try {
             await logIn(data);
-            history.push("/");
+            history.push(
+                history.location.state
+                    ? history.location.state.from.pathname
+                    : "/"
+            );
         } catch (error) {
             console.log("error:", error);
             setEnterError(error.message);
