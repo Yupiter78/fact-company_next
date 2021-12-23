@@ -8,9 +8,11 @@ import UserTable from "../../ui/usersTable";
 import _ from "lodash";
 import { useUser } from "../../../hooks/useUsers";
 import { useProfessions } from "../../../hooks/useProfession";
+import { useAuth } from "../../../hooks/useAuth";
 
 const UsersListPage = () => {
     const { users } = useUser();
+    const { currentUser } = useAuth();
     const { professions, isLoading: professionsLoading } = useProfessions();
     const [currentPage, setCurrentPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState("");
@@ -53,19 +55,25 @@ const UsersListPage = () => {
         setSortBy(item);
     };
 
-    const filteredUsers = searchQuery
-        ? users.filter(
-              (user) =>
-                  user.name.toLowerCase().indexOf(searchQuery.toLowerCase()) !==
-                  -1
-          )
-        : selectedProf
-        ? users.filter(
-              (user) =>
-                  JSON.stringify(user.profession) ===
-                  JSON.stringify(selectedProf)
-          )
-        : users;
+    function filterUsers(data) {
+        const filteredUsers = searchQuery
+            ? data.filter(
+                  (user) =>
+                      user.name
+                          .toLowerCase()
+                          .indexOf(searchQuery.toLowerCase()) !== -1
+              )
+            : selectedProf
+            ? data.filter(
+                  (user) =>
+                      JSON.stringify(user.profession) ===
+                      JSON.stringify(selectedProf)
+              )
+            : data;
+        return filteredUsers.filter((user) => user._id !== currentUser._id);
+    }
+
+    const filteredUsers = filterUsers(users);
 
     const count = filteredUsers.length;
     const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
