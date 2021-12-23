@@ -13,17 +13,14 @@ const UserCard = ({ user }) => {
                     className="position-absolute top-0 end-0 btn btn-light btn-sm"
                     onClick={handleClick}
                 >
-                    <i className="bi bi-gear"></i>
+                    <i className="bi bi-gear" />
                 </button>
                 <div className="d-flex flex-column align-items-center text-center position-relative">
                     <img
-                        src={`https://avatars.dicebear.com/api/avataaars/${(
-                            Math.random() + 1
-                        )
-                            .toString(36)
-                            .substring(7)}.svg`}
+                        src={user.image}
                         className="rounded-circle"
                         width="150"
+                        alt=""
                     />
                     <div className="mt-3">
                         <h4>{user.name}</h4>
@@ -34,11 +31,11 @@ const UserCard = ({ user }) => {
                             <i
                                 className="bi bi-caret-down-fill text-primary"
                                 role="button"
-                            ></i>
+                            />
                             <i
                                 className="bi bi-caret-up text-secondary"
                                 role="button"
-                            ></i>
+                            />
                             <span className="ms-2">{user.rate}</span>
                         </div>
                     </div>
