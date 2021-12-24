@@ -7,6 +7,7 @@ import { useComments } from "../../hooks/useComments";
 
 const Comments = () => {
     const { userId } = useParams();
+    console.log("useParams():", useParams());
     const [comments, setComments] = useState([]);
     const { createComment } = useComments();
     useEffect(() => {
