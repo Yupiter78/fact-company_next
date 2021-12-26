@@ -15,14 +15,12 @@ export const useComments = () => {
 export const CommentsProvider = ({ children }) => {
     const { userId } = useParams();
     const { currentUser } = useAuth();
-    console.log("userID:", userId);
-    console.log("currentUser:", currentUser);
     const [isLoading, setLoading] = useState(true);
     const [comments, setComments] = useState([]);
     const [error, setError] = useState(null);
     useEffect(() => {
         getComments();
-    }, []);
+    }, [userId]);
 
     async function createComment(data) {
         const comment = {
@@ -32,10 +30,9 @@ export const CommentsProvider = ({ children }) => {
             created_at: Date.now(),
             userId: currentUser._id
         };
-        console.log(comment);
         try {
             const { content } = await commentService.createComment(comment);
-            console.log("content:", content);
+            setComments((prevState) => [...prevState, content]);
         } catch (error) {
             errorCatcher(error);
         }
@@ -44,10 +41,8 @@ export const CommentsProvider = ({ children }) => {
     async function getComments() {
         try {
             const { content } = await commentService.getComments(userId);
-            console.log("content:", content);
             setComments(content);
         } catch (error) {
-            console.log("error:", error);
             errorCatcher(error);
         } finally {
             setLoading(false);
