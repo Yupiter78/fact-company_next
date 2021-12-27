@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import _ from "lodash";
 import { validator } from "../../../utils/ validator";
 // import api from "../../../api";
 import TextField from "../../common/form/textField";
@@ -21,16 +22,11 @@ const EditUserPage = () => {
     console.log("user:", user);
     const { currentUser } = useAuth();
     console.log("currentUser:", currentUser);
-    const [isLoading, setIsLoading] = useState(false);
-    const [data, setData] = useState({
-        name: "",
-        email: "",
-        password: "",
-        profession: "",
-        sex: "male",
-        qualities: []
-    });
-    const { qualities, getQuality } = useQualities();
+    const [data, setData] = useState({});
+    const { qualities, getQuality, isLoading } = useQualities();
+    console.log("isLoading:", isLoading);
+    const isEmpty = _.isEmpty(data);
+    console.log("isEmpty:", isEmpty);
     const qualitiesList = qualities.map((q) => ({
         label: q.name,
         value: q._id
@@ -78,12 +74,25 @@ const EditUserPage = () => {
     };
     useEffect(() => {
         console.log("currentUser.qualities:", currentUser.qualities);
-        const getQualitiesById = currentUser.qualities.map((id) =>
-            getQuality(id)
-        );
-        console.log("getQualitiesById:", getQualitiesById);
-        setIsLoading(true);
-        setData({ ...user, qualities: getQualitiesById });
+        console.log("getQuality:", getQuality);
+        const getQualitiesById = (qualitiesId) => {
+            console.log("qualitiesId:", qualitiesId);
+            const qualities = qualitiesId.map((q) => getQuality(q));
+            return qualities.map((q) => ({ label: q.name, value: q._id }));
+        };
+        // const getQualitiesById = !isLoading
+        //     ? currentUser.qualities?.map((id) => getQuality(id))
+        //     : [];
+        if (!isLoading) {
+            console.log(
+                "getQualitiesById:",
+                getQualitiesById(currentUser.qualities)
+            );
+            setData({
+                ...currentUser,
+                qualities: getQualitiesById(currentUser.qualities)
+            });
+        }
         //     api.users.getById(userId).then(({ profession, qualities, ...data }) =>
         //         setData((prevState) => ({
         //             ...prevState,
@@ -94,11 +103,11 @@ const EditUserPage = () => {
         //     );
         //     api.qualities.fetchAll().then((data) => setQualities(data));
         //     api.professions.fetchAll().then((data) => setProfession(data));
-    }, []);
+    }, [isLoading]);
     console.log("data:", data);
     console.log("transformData(qualities)", transformData(qualities));
     useEffect(() => {
-        if (data._id) setIsLoading(false);
+        if (data?._id) console.log("data_quality:", data);
     }, [data]);
 
     const validatorConfog = {
@@ -135,7 +144,7 @@ const EditUserPage = () => {
             <BackHistoryButton />
             <div className="row">
                 <div className="col-md-6 offset-md-3 shadow p-4">
-                    {!isLoading && Object.keys(professions).length > 0 ? (
+                    {!isLoading && !isEmpty ? (
                         <form onSubmit={handleSubmit}>
                             <TextField
                                 label="Имя"
