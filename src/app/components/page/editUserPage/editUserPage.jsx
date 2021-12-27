@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-// import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { validator } from "../../../utils/ validator";
 // import api from "../../../api";
 import TextField from "../../common/form/textField";
@@ -9,19 +9,28 @@ import MultiSelectField from "../../common/form/multiSelectField";
 import BackHistoryButton from "../../common/backButton";
 import { useProfessions } from "../../../hooks/useProfession";
 import { useQualities } from "../../../hooks/useQualities";
+import { useUser } from "../../../hooks/useUsers";
+import { useAuth } from "../../../hooks/useAuth";
 
 const EditUserPage = () => {
-    // const { userId } = useParams();
-    // const history = useHistory();
+    const { userId } = useParams();
+    const history = useHistory();
+    console.log("history:", history);
+    const { getUserById } = useUser();
+    const user = getUserById(userId);
+    console.log("user:", user);
+    const { currentUser } = useAuth();
+    console.log("currentUser:", currentUser);
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState({
+        name: "",
         email: "",
         password: "",
         profession: "",
         sex: "male",
         qualities: []
     });
-    const { qualities } = useQualities();
+    const { qualities, getQuality } = useQualities();
     const qualitiesList = qualities.map((q) => ({
         label: q.name,
         value: q._id
@@ -67,19 +76,26 @@ const EditUserPage = () => {
     const transformData = (data) => {
         return data.map((qual) => ({ label: qual.name, value: qual._id }));
     };
-    // useEffect(() => {
-    //     setIsLoading(true);
-    //     api.users.getById(userId).then(({ profession, qualities, ...data }) =>
-    //         setData((prevState) => ({
-    //             ...prevState,
-    //             ...data,
-    //             qualities: transformData(qualities),
-    //             profession: profession._id
-    //         }))
-    //     );
-    //     api.qualities.fetchAll().then((data) => setQualities(data));
-    //     api.professions.fetchAll().then((data) => setProfession(data));
-    // }, []);
+    useEffect(() => {
+        console.log("currentUser.qualities:", currentUser.qualities);
+        const getQualitiesById = currentUser.qualities.map((id) =>
+            getQuality(id)
+        );
+        console.log("getQualitiesById:", getQualitiesById);
+        setIsLoading(true);
+        setData({ ...user, qualities: getQualitiesById });
+        //     api.users.getById(userId).then(({ profession, qualities, ...data }) =>
+        //         setData((prevState) => ({
+        //             ...prevState,
+        //             ...data,
+        //             qualities: transformData(qualities),
+        //             profession: profession._id
+        //         }))
+        //     );
+        //     api.qualities.fetchAll().then((data) => setQualities(data));
+        //     api.professions.fetchAll().then((data) => setProfession(data));
+    }, []);
+    console.log("data:", data);
     console.log("transformData(qualities)", transformData(qualities));
     useEffect(() => {
         if (data._id) setIsLoading(false);
