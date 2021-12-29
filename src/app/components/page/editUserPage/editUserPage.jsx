@@ -20,7 +20,7 @@ const EditUserPage = () => {
     const { getUserById } = useUser();
     const user = getUserById(userId);
     console.log("user:", user);
-    const { currentUser } = useAuth();
+    const { currentUser, update } = useAuth();
     console.log("currentUser:", currentUser);
     const [data, setData] = useState({});
     const { qualities, getQuality, isLoading } = useQualities();
@@ -67,6 +67,7 @@ const EditUserPage = () => {
         //         qualities: getQualities(qualities)
         //     })
         //     .then((data) => history.push(`/users/${data._id}`));
+        update(data);
         console.log(data);
     };
     const transformData = (data) => {
@@ -144,6 +145,15 @@ const EditUserPage = () => {
             <BackHistoryButton />
             <div className="row">
                 <div className="col-md-6 offset-md-3 shadow p-4">
+                    <div className="mb-4">
+                        <img
+                            src={currentUser.image}
+                            className="rounded-circle shadow-1-strong me-3"
+                            alt="avatar"
+                            width="65"
+                            height="65"
+                        />
+                    </div>
                     {!isLoading && !isEmpty ? (
                         <form onSubmit={handleSubmit}>
                             <TextField
