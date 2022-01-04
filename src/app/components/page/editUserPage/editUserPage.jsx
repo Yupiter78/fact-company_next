@@ -72,7 +72,6 @@ const EditUserPage = () => {
     useEffect(() => {
         if (!professionIsLoading && !qualityIsLoading) {
             loadingData(currentUser);
-            console.log("qualities:", qualities);
         }
     }, [professionIsLoading, qualityIsLoading]);
 
@@ -108,7 +107,9 @@ const EditUserPage = () => {
         };
         setData(newData);
     };
-    useEffect(() => validate(), [data]);
+    useEffect(() => {
+        validate();
+    }, [data]);
 
     const handleChange = (target) => {
         setData((prevState) => ({

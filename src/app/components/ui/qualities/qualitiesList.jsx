@@ -5,7 +5,7 @@ import { useQualities } from "../../../hooks/useQualities";
 
 const QualitiesList = ({ qualities }) => {
     const { isLoading } = useQualities();
-    if (isLoading) return "Loadind ...";
+    if (isLoading) return "Loading ...";
     return (
         <>
             {qualities.map((qual) => (

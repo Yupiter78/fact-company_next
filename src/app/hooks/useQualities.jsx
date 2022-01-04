@@ -18,7 +18,6 @@ export const QualitiesProvider = ({ children }) => {
         const getQualities = async () => {
             try {
                 const { content } = await qualityService.fetchAll();
-                console.log("content_useQualities:", content);
                 setQualities(content);
                 setLoading(false);
             } catch (error) {
@@ -28,8 +27,6 @@ export const QualitiesProvider = ({ children }) => {
         getQualities();
     }, []);
     const getQuality = (id) => {
-        console.log("id_quality_GET:", id);
-        console.log("quality_useQualities_GET:", qualities);
         return qualities.find((q) => q._id === id);
     };
 
