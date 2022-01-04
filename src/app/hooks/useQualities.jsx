@@ -28,8 +28,8 @@ export const QualitiesProvider = ({ children }) => {
         getQualities();
     }, []);
     const getQuality = (id) => {
-        console.log("id_quality:", id);
-        console.log("quality_useQualities:", qualities);
+        console.log("id_quality_GET:", id);
+        console.log("quality_useQualities_GET:", qualities);
         return qualities.find((q) => q._id === id);
     };
 

@@ -22,7 +22,7 @@ export const useAuth = () => {
 };
 
 const AuthProvider = ({ children }) => {
-    const [currentUser, setUser] = useState();
+    const [currentUser, setUser] = useState(null);
     const [error, setError] = useState(null);
     const [isLoading, setLoading] = useState(true);
     const history = useHistory();
@@ -107,7 +107,6 @@ const AuthProvider = ({ children }) => {
     async function createUser(data) {
         try {
             const { content } = await userService.create(data);
-            console.log("content:", content);
             setUser(content);
         } catch (error) {
             errorCatcher(error);
@@ -130,7 +129,7 @@ const AuthProvider = ({ children }) => {
         }
     }
 
-    async function update({ email, password, ...rest }) {
+    async function update(email, password, userData) {
         try {
             const { data } = await httpAuth.post(`accounts:update`, {
                 idToken: localStorageService.getAccessToken(),
@@ -138,9 +137,37 @@ const AuthProvider = ({ children }) => {
                 password,
                 returnSecureToken: true
             });
-            console.log("data:", data);
-        } catch (error) {
-            console.log(error);
+            setTokens(data);
+
+            await updateUser(data.localId, {
+                email,
+                ...userData
+            });
+
+            await getUserData();
+        } catch (err) {
+            const { code, message } = err.response.data.error;
+            if (code === 400) {
+                if (message === "EMAIL_EXISTS") {
+                    // eslint-disable-next-line no-throw-literal
+                    throw {
+                        email: "Пользователь с таким EMAIL уже существует"
+                    };
+                }
+                // else if (message === 'CREDENTIAL_TOO_OLD_LOGIN_AGAIN') {
+                //   throw new Error('Учетные данные устарели. Войдите в систему снова!')
+                // }
+            }
+            errorCatcher(err);
+        }
+    }
+
+    async function updateUser(id, data) {
+        try {
+            const { content } = await userService.update(id, data);
+            setUser(content);
+        } catch (err) {
+            errorCatcher(err);
         }
     }
 

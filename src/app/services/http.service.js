@@ -21,6 +21,7 @@ http.interceptors.request.use(
                     grant_type: "refresh_token",
                     refresh_token: refreshToken
                 });
+
                 localStorageService.setTokens({
                     refreshToken: data.refresh_token,
                     idToken: data.id_token,
@@ -33,6 +34,7 @@ http.interceptors.request.use(
                 config.params = { ...config.params, auth: accessToken };
             }
         }
+        console.log("___________config_HTTP_service:_____________", config);
         return config;
     },
     function (error) {
@@ -72,6 +74,7 @@ const httpService = {
     get: http.get,
     post: http.post,
     put: http.put,
+    patch: http.patch,
     delete: http.delete
 };
 export default httpService;
