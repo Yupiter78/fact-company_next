@@ -1,116 +1,94 @@
 import React, { useEffect, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
-import { validator } from "../../../utils/ validator";
+import { useHistory } from "react-router-dom";
+import { validator } from "../../../utils/validator";
 import TextField from "../../common/form/textField";
 import SelectField from "../../common/form/selectField";
 import RadioField from "../../common/form/radio.Field";
 import MultiSelectField from "../../common/form/multiSelectField";
 import BackHistoryButton from "../../common/backButton";
-import { useProfessions } from "../../../hooks/useProfession";
-import { useQualities } from "../../../hooks/useQualities";
 import { useAuth } from "../../../hooks/useAuth";
+import { useQualities } from "../../../hooks/useQualities";
+import { useProfessions } from "../../../hooks/useProfession";
 
 const EditUserPage = () => {
-    const { userId } = useParams();
     const history = useHistory();
-    const { currentUser, update } = useAuth();
+    const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState();
-    const {
-        qualities,
-        getQuality,
-        isLoading: qualityIsLoading
-    } = useQualities();
+    const { currentUser, updateUserData } = useAuth();
+    const { qualities, isLoading: qualitiesLoading } = useQualities();
     const qualitiesList = qualities.map((q) => ({
         label: q.name,
         value: q._id
     }));
-    const { professions, isLoading: professionIsLoading } = useProfessions();
+    const { professions, isLoading: professionLoading } = useProfessions();
     const professionsList = professions.map((p) => ({
         label: p.name,
         value: p._id
     }));
+
     const [errors, setErrors] = useState({});
 
-    const validatorConfig = {
-        name: {
-            isRequired: { message: "Имя обязательно для заполнения" }
-        },
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const isValid = validate();
+        if (!isValid) return;
+        await updateUserData({
+            ...data,
+            qualities: data.qualities.map((q) => q.value)
+        });
+        history.push(`/users/${currentUser._id}`);
+    };
+    function getQualitiesListByIds(qualitiesIds) {
+        const qualitiesArray = [];
+        for (const qualId of qualitiesIds) {
+            for (const quality of qualities) {
+                if (quality._id === qualId) {
+                    qualitiesArray.push(quality);
+                    break;
+                }
+            }
+        }
+        return qualitiesArray;
+    }
+    const transformData = (data) => {
+        const result = getQualitiesListByIds(data).map((qual) => ({
+            label: qual.name,
+            value: qual._id
+        }));
+
+        return result;
+    };
+    useEffect(() => {
+        if (!professionLoading && !qualitiesLoading && currentUser && !data) {
+            setData({
+                ...currentUser,
+                qualities: transformData(currentUser.qualities)
+            });
+        }
+    }, [professionLoading, qualitiesLoading, currentUser, data]);
+    useEffect(() => {
+        if (data && isLoading) {
+            setIsLoading(false);
+        }
+    }, [data]);
+
+    const validatorConfog = {
         email: {
             isRequired: {
                 message: "Электронная почта обязательна для заполнения"
             },
-            isEmail: { message: "Введите корректный email" }
-        },
-        password: {
-            isRequired: { message: "Пароль обязателен для заполнения" },
-            hasCapital: {
-                message: "Пароль должен содержать хотя бы одну заглавную букву"
-            },
-            hasNumber: {
-                message: "Пароль должен содержать хотя бы одну цифру"
-            },
-            min: {
-                message: "Пароль должен состоять из 8 и более символов",
-                value: 8
+            isEmail: {
+                message: "Email введен некорректно"
             }
         },
-        profession: {
-            isRequired: { message: "Профессию выбрать обязательно" }
-        },
-        license: {
+
+        name: {
             isRequired: {
-                message:
-                    "Вы не можете использовать наш сервис без подтверждения лицензионного соглашения"
+                message: "Введите ваше имя"
             }
         }
     };
-
-    if (userId !== currentUser._id) {
-        history.push(`/users/${currentUser._id}/edit`);
-    }
-
-    useEffect(() => {
-        if (!professionIsLoading && !qualityIsLoading) {
-            loadingData(currentUser);
-        }
-    }, [professionIsLoading, qualityIsLoading]);
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const isValid = validate();
-        if (!isValid) return;
-        const qualities = data.qualities.map((q) => q.value);
-        const newData = {
-            ...data,
-            qualities
-        };
-        delete newData.email;
-        delete newData.password;
-        try {
-            await update(data.email, data.password, newData);
-            history.push(`/users/${userId}`);
-        } catch (err) {
-            setErrors(err);
-        }
-    };
-
-    function getQualitiesById(qualitiesId) {
-        const qualities = qualitiesId.map((q) => getQuality(q));
-        return qualities.map((q) => ({ label: q.name, value: q._id }));
-    }
-
-    const loadingData = (user) => {
-        const newData = {
-            ...user,
-            password: "",
-            qualities: getQualitiesById(user.qualities)
-        };
-        setData(newData);
-    };
-    useEffect(() => {
-        validate();
-    }, [data]);
-
+    useEffect(() => validate(), [data]);
     const handleChange = (target) => {
         setData((prevState) => ({
             ...prevState,
@@ -118,27 +96,17 @@ const EditUserPage = () => {
         }));
     };
     const validate = () => {
-        const errors = validator(data, validatorConfig);
+        const errors = validator(data, validatorConfog);
         setErrors(errors);
         return Object.keys(errors).length === 0;
     };
     const isValid = Object.keys(errors).length === 0;
-
     return (
         <div className="container mt-5">
             <BackHistoryButton />
             <div className="row">
                 <div className="col-md-6 offset-md-3 shadow p-4">
-                    <div className="mb-4">
-                        <img
-                            src={currentUser.image}
-                            className="rounded-circle shadow-1-strong me-3"
-                            alt="avatar"
-                            width="65"
-                            height="65"
-                        />
-                    </div>
-                    {data ? (
+                    {!isLoading && Object.keys(professions).length > 0 ? (
                         <form onSubmit={handleSubmit}>
                             <TextField
                                 label="Имя"
@@ -153,14 +121,6 @@ const EditUserPage = () => {
                                 value={data.email}
                                 onChange={handleChange}
                                 error={errors.email}
-                            />
-                            <TextField
-                                name="password"
-                                label="Пароль"
-                                type="password"
-                                value={data.password ? data.password : ""}
-                                onChange={handleChange}
-                                error={errors.password}
                             />
                             <SelectField
                                 label="Выбери свою профессию"
@@ -186,7 +146,6 @@ const EditUserPage = () => {
                                 defaultValue={data.qualities}
                                 options={qualitiesList}
                                 onChange={handleChange}
-                                values
                                 name="qualities"
                                 label="Выберите ваши качесвта"
                             />

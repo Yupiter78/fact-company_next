@@ -9,11 +9,10 @@ import _ from "lodash";
 import { useUser } from "../../../hooks/useUsers";
 import { useProfessions } from "../../../hooks/useProfession";
 import { useAuth } from "../../../hooks/useAuth";
-
 const UsersListPage = () => {
     const { users } = useUser();
     const { currentUser } = useAuth();
-    const { professions, isLoading: professionsLoading } = useProfessions();
+    const { isLoading: professionsLoading, professions } = useProfessions();
     const [currentPage, setCurrentPage] = useState(1);
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedProf, setSelectedProf] = useState();
@@ -70,11 +69,9 @@ const UsersListPage = () => {
                       JSON.stringify(selectedProf)
               )
             : data;
-        return filteredUsers.filter((user) => user._id !== currentUser._id);
+        return filteredUsers.filter((u) => u._id !== currentUser._id);
     }
-
     const filteredUsers = filterUsers(users);
-
     const count = filteredUsers.length;
     const sortedUsers = _.orderBy(filteredUsers, [sortBy.path], [sortBy.order]);
     const usersCrop = paginate(sortedUsers, currentPage, pageSize);
@@ -95,7 +92,7 @@ const UsersListPage = () => {
                         className="btn btn-secondary mt-2"
                         onClick={clearFilter}
                     >
-                        Clear
+                        Очиститть
                     </button>
                 </div>
             )}

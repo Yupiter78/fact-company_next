@@ -3,10 +3,10 @@ import { toast } from "react-toastify";
 import PropTypes from "prop-types";
 import qualityService from "../services/qaulity.service";
 
-const QualitiesContext = React.createContext();
+const QualitiesContex = React.createContext();
 
 export const useQualities = () => {
-    return useContext(QualitiesContext);
+    return useContext(QualitiesContex);
 };
 
 export const QualitiesProvider = ({ children }) => {
@@ -42,7 +42,7 @@ export const QualitiesProvider = ({ children }) => {
     }, [error]);
 
     return (
-        <QualitiesContext.Provider
+        <QualitiesContex.Provider
             value={{
                 qualities,
                 getQuality,
@@ -50,7 +50,7 @@ export const QualitiesProvider = ({ children }) => {
             }}
         >
             {children}
-        </QualitiesContext.Provider>
+        </QualitiesContex.Provider>
     );
 };
 

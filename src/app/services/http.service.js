@@ -25,8 +25,8 @@ http.interceptors.request.use(
                 localStorageService.setTokens({
                     refreshToken: data.refresh_token,
                     idToken: data.id_token,
-                    localId: data.user_id,
-                    expiresIn: data.expires_in
+                    expiresIn: data.expires_in,
+                    localId: data.user_id
                 });
             }
             const accessToken = localStorageService.getAccessToken();
@@ -40,19 +40,17 @@ http.interceptors.request.use(
         return Promise.reject(error);
     }
 );
-
-function transformData(data) {
+function transormData(data) {
     return data && !data._id
         ? Object.keys(data).map((key) => ({
               ...data[key]
           }))
         : data;
 }
-
 http.interceptors.response.use(
     (res) => {
         if (configFile.isFireBase) {
-            res.data = { content: transformData(res.data) };
+            res.data = { content: transormData(res.data) };
         }
         return res;
     },
@@ -64,7 +62,7 @@ http.interceptors.response.use(
 
         if (!expectedErrors) {
             console.log(error);
-            toast.error("Something was wrong. Try it later");
+            toast.error("Somthing was wrong. Try it later");
         }
         return Promise.reject(error);
     }
@@ -73,7 +71,7 @@ const httpService = {
     get: http.get,
     post: http.post,
     put: http.put,
-    patch: http.patch,
-    delete: http.delete
+    delete: http.delete,
+    patch: http.patch
 };
 export default httpService;

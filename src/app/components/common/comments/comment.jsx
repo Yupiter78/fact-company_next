@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { displayDate } from "../../../utils/displayDate";
 import { useUser } from "../../../hooks/useUsers";
 import { useAuth } from "../../../hooks/useAuth";
-
 const Comment = ({
     content,
     created_at: created,
@@ -41,7 +40,7 @@ const Comment = ({
                                             className="btn btn-sm text-primary d-flex align-items-center"
                                             onClick={() => onRemove(id)}
                                         >
-                                            <i className="bi bi-x-lg" />
+                                            <i className="bi bi-x-lg"></i>
                                         </button>
                                     )}
                                 </div>

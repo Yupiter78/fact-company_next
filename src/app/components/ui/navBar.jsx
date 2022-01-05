@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import NavProfile from "./navProfile";
-
 const NavBar = () => {
     const { currentUser } = useAuth();
     return (

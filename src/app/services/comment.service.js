@@ -1,5 +1,4 @@
 import httpService from "./http.service";
-
 const commentEndpoint = "comment/";
 
 const commentService = {
@@ -12,7 +11,10 @@ const commentService = {
     },
     getComments: async (pageId) => {
         const { data } = await httpService.get(commentEndpoint, {
-            params: { orderBy: `"pageId"`, equalTo: `"${pageId}"` }
+            params: {
+                orderBy: '"pageId"',
+                equalTo: `"${pageId}"`
+            }
         });
         return data;
     },

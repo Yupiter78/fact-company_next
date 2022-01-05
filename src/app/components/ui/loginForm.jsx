@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { validator } from "../../utils/ validator";
+import { validator } from "../../utils/validator";
 import TextField from "../common/form/textField";
 import CheckBoxField from "../common/form/checkBoxField";
 import { useAuth } from "../../hooks/useAuth";
@@ -23,28 +23,15 @@ const LoginForm = () => {
         setEnterError(null);
     };
 
-    const validatorConfig = {
+    const validatorConfog = {
         email: {
             isRequired: {
-                message: "Email isRequired"
-            },
-            isEmail: {
-                message: "Email entered incorrectly"
+                message: "Электронная почта обязательна для заполнения"
             }
         },
         password: {
             isRequired: {
-                message: "password isRequired"
-            },
-            isCapitalSymbol: {
-                message: "password must contain at least one uppercase letter"
-            },
-            isContainDigit: {
-                message: "password must contain at least one number"
-            },
-            min: {
-                message: "password must be at least 8 characters long",
-                value: 8
+                message: "Пароль обязателкн для заполнения"
             }
         }
     };
@@ -52,7 +39,7 @@ const LoginForm = () => {
         validate();
     }, [data]);
     const validate = () => {
-        const errors = validator(data, validatorConfig);
+        const errors = validator(data, validatorConfog);
         setErrors(errors);
         return Object.keys(errors).length === 0;
     };
@@ -65,27 +52,27 @@ const LoginForm = () => {
 
         try {
             await logIn(data);
+
             history.push(
                 history.location.state
                     ? history.location.state.from.pathname
                     : "/"
             );
         } catch (error) {
-            console.log("error:", error);
             setEnterError(error.message);
         }
     };
     return (
         <form onSubmit={handleSubmit}>
             <TextField
-                label="Email"
+                label="Электронная почта"
                 name="email"
                 value={data.email}
                 onChange={handleChange}
                 error={errors.email}
             />
             <TextField
-                label="Password"
+                label="Пароль"
                 type="password"
                 name="password"
                 value={data.password}
@@ -97,7 +84,7 @@ const LoginForm = () => {
                 onChange={handleChange}
                 name="stayOn"
             >
-                Stay on in the system
+                Оставаться в системе
             </CheckBoxField>
             {enterError && <p className="text-danger">{enterError}</p>}
             <button
