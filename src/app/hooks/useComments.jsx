@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { toast } from "react-toastify";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import { useAuth } from "./useAuth";
 import { nanoid } from "nanoid";
 import commentService from "../services/comment.service";
