@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import qualityService from "../services/quality.service";
 
 const qualitiesSlice = createSlice({
     name: "qualities",
@@ -25,8 +26,14 @@ const qualitiesSlice = createSlice({
 const { reducer: qualitiesReducer, actions } = qualitiesSlice;
 const { qualitiesRequested, qualitiesReceived, qualitiesRequestFiled } =
     actions;
-const loadQualitiesList = () => (dispatch) => {
-    dispatch(qualitiesReceived());
+export const loadQualitiesList = () => async (dispatch) => {
+    dispatch(qualitiesRequested());
+    try {
+        const { content } = await qualityService.fetchAll();
+        dispatch(qualitiesReceived(content));
+    } catch (error) {
+        dispatch(qualitiesRequestFiled(error.message));
+    }
 };
 
 export default qualitiesReducer;
