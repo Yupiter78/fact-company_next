@@ -36,4 +36,23 @@ export const loadQualitiesList = () => async (dispatch) => {
     }
 };
 
+export const getQualities = () => (state) => state.qualities.entities;
+export const getQualitiesLoadingStatus = () => (state) =>
+    state.qualities.isLoading;
+export const getQualitiesByIds = (qualitiesId) => (state) => {
+    if (state.qualities.entities) {
+        const qualitiesArray = [];
+        for (const qualId of qualitiesId) {
+            for (const quality of state.qualities.entities) {
+                if (quality._id === qualId) {
+                    qualitiesArray.push(quality);
+                    break;
+                }
+            }
+        }
+        return qualitiesArray;
+    }
+    return [];
+};
+
 export default qualitiesReducer;
