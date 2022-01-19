@@ -30,7 +30,7 @@ const { reducer: professionsReducer, actions } = professionSlice;
 const { professionsRequested, professionsReceived, professionsRequestFiled } =
     actions;
 
-export const loadProfessionList = () => async (dispatch, getState) => {
+export const loadProfessionsList = () => async (dispatch, getState) => {
     const { lastFetch } = getState().professions;
     if (isOutdated(lastFetch)) {
         console.log("lastFetch:", lastFetch);

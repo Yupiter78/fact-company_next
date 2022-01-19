@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     getProfessionById,
     getProfessionsLoadingStatus,
-    loadProfessionList
+    loadProfessionsList
 } from "../../store/professions";
 
 const Profession = ({ id }) => {
@@ -19,7 +19,7 @@ const Profession = ({ id }) => {
 
     const prof = useSelector(getProfessionById(id));
     useEffect(() => {
-        dispatch(loadProfessionList());
+        dispatch(loadProfessionsList());
     }, []);
 
     if (!isLoading) {
