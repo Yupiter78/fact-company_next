@@ -1,15 +1,16 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAction } from "@reduxjs/toolkit";
 import userService from "../services/user.service";
 import authService from "../services/auth.service";
 import localStorageService from "../services/localStorage.service";
-import { createAction } from "@reduxjs/toolkit/src/createAction";
 
 const usersSlice = createSlice({
     name: "users",
     initialState: {
         entities: null,
         isLoading: true,
-        error: null
+        error: null,
+        auth: null,
+        isLoggedIn: false
     },
     reducers: {
         usersRequested: (state) => {
@@ -23,25 +24,36 @@ const usersSlice = createSlice({
             state.error = action.payload;
             state.isLoading = false;
         },
-        authRequestSuccess: (state, action) => {}
+        authRequestSuccess: (state, action) => {
+            state.auth = { ...action.payload, isLoggedIn: true };
+        },
+        authRequestSuccessFiled: (state, action) => {
+            state.error = action.payload;
+        }
     }
 });
 
 const { reducer: usersReducer, actions } = usersSlice;
-const { usersRequested, usersReceived, usersRequestFiled, authRequestSuccess } =
-    actions;
+const {
+    usersRequested,
+    usersReceived,
+    usersRequestFiled,
+    authRequestSuccess,
+    authRequestSuccessFiled
+} = actions;
 const authRequested = createAction("users/authRequested");
 
 export const signUp =
-    ({ email, password, ...rest }) =>
+    ({ email, password }) =>
     async (dispatch) => {
         dispatch(authRequested());
         try {
             const data = await authService.register({ email, password });
             localStorageService.setTokens(data);
-            dispatch(authRequestSuccess({ useId: data.localId }));
+            dispatch(authRequestSuccess({ userId: data.localId }));
         } catch (error) {
             console.log("error:", error);
+            dispatch(authRequestSuccessFiled(error.message));
         }
     };
 
@@ -58,7 +70,6 @@ export const loadUsersList = () => async (dispatch) => {
 };
 
 export const getUsersList = () => (state) => state.users.entities;
-export const getUsersLoadingStatus = () => (state) => state.users.isLoading;
 export const getUserById = (userId) => (state) => {
     if (state.users.entities) {
         return state.users.entities.find((user) => user._id === userId);
