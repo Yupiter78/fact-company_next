@@ -29,7 +29,7 @@ const usersSlice = createSlice({
         authRequestSuccess: (state, action) => {
             state.auth = { ...action.payload, isLoggedIn: true };
         },
-        authRequestSuccessFailed: (state, action) => {
+        authRequestFailed: (state, action) => {
             state.error = action.payload;
         },
         userCreated: (state, action) => {
@@ -44,12 +44,26 @@ const {
     usersReceived,
     usersRequestFailed,
     authRequestSuccess,
-    authRequestSuccessFailed,
+    authRequestFailed,
     userCreated
 } = actions;
 const authRequested = createAction("users/authRequested");
 const userCreateRequested = createAction("users/userCreateRequested");
 const createUserFailed = createAction("users/createUserFailed");
+
+export const logIn =
+    ({ payload, redirect }) =>
+    async (dispatch) => {
+        dispatch(authRequested());
+        try {
+            const data = authService.login(payload);
+            dispatch(authRequestSuccess({ userId: data.localId }));
+            localStorageService.setTokens(data);
+            history.push(redirect);
+        } catch (error) {
+            dispatch(authRequestFailed(error.message));
+        }
+    };
 
 export const signUp =
     ({ email, password, ...rest }) =>
@@ -75,7 +89,7 @@ export const signUp =
             );
         } catch (error) {
             console.log("error:", error);
-            dispatch(authRequestSuccessFailed(error.message));
+            dispatch(authRequestFailed(error.message));
         }
     };
 
@@ -100,7 +114,7 @@ export const loadUsersList = () => async (dispatch) => {
         console.log("usersReceived(content):", usersReceived(content));
         dispatch(usersReceived(content));
     } catch (error) {
-        dispatch(usersRequestFailed(error.message()));
+        dispatch(usersRequestFailed(error.message));
     }
 };
 
