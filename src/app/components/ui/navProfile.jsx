@@ -9,7 +9,6 @@ const NavProfile = () => {
     const toggleMenu = () => {
         setOpen((prevState) => !prevState);
     };
-    console.log("render user bar");
     if (!currentUser) return "loading...";
     return (
         <div className="dropdown" onClick={toggleMenu}>
