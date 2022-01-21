@@ -12,7 +12,8 @@ const usersSlice = createSlice({
         isLoading: true,
         error: null,
         auth: null,
-        isLoggedIn: false
+        isLoggedIn: false,
+        dataLoaded: false
     },
     reducers: {
         usersRequested: (state) => {
@@ -20,6 +21,7 @@ const usersSlice = createSlice({
         },
         usersReceived: (state, action) => {
             state.entities = action.payload;
+            state.dataLoaded = true;
             state.isLoading = false;
         },
         usersRequestFailed: (state, action) => {
@@ -27,6 +29,7 @@ const usersSlice = createSlice({
             state.isLoading = false;
         },
         authRequestSuccess: (state, action) => {
+            console.log("action:", action);
             state.auth = action.payload;
             state.isLoggedIn = true;
         },
@@ -59,6 +62,7 @@ export const logIn =
         try {
             const data = await authService.login(payload);
             localStorageService.setTokens(data);
+            console.log("data:", data);
             dispatch(authRequestSuccess({ userId: data.localId }));
             history.push(redirect);
         } catch (error) {
@@ -126,6 +130,7 @@ export const getUserById = (userId) => (state) => {
     }
 };
 export const getIsLoggedIn = () => (state) => state.users.isLoggedIn;
+export const getDataStatus = () => (state) => state.users.dataLoaded;
 export const getCurrentUserId = () => (state) => state.users.auth.userId;
 
 export default usersReducer;

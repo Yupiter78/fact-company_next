@@ -74,6 +74,7 @@ const UsersListPage = () => {
                       JSON.stringify(selectedProf)
               )
             : data;
+        console.log("currentUserId:", currentUserId);
         return filteredUsers.filter((u) => u._id !== currentUserId);
     }
 
