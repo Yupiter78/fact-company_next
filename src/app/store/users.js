@@ -57,9 +57,9 @@ export const logIn =
     async (dispatch) => {
         dispatch(authRequested());
         try {
-            const data = authService.login(payload);
-            dispatch(authRequestSuccess({ userId: data.localId }));
+            const data = await authService.login(payload);
             localStorageService.setTokens(data);
+            dispatch(authRequestSuccess({ userId: data.localId }));
             history.push(redirect);
         } catch (error) {
             dispatch(authRequestFailed(error.message));
@@ -126,5 +126,6 @@ export const getUserById = (userId) => (state) => {
     }
 };
 export const getIsLoggedIn = () => (state) => state.users.isLoggedIn;
+export const getCurrentUserId = () => (state) => state.users.auth.userId;
 
 export default usersReducer;

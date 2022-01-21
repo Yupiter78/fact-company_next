@@ -10,7 +10,6 @@ import { Provider } from "react-redux";
 import history from "./app/utils/history";
 
 const store = createStore();
-console.log("H:", history);
 
 ReactDOM.render(
     <React.StrictMode>
