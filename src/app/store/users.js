@@ -55,6 +55,18 @@ const usersSlice = createSlice({
             state.isLoggedIn = false;
             state.auth = null;
             state.dataLoaded = null;
+        },
+        userUpdate: (state, action) => {
+            const elemIndex = state.entities.findIndex(
+                (el) => el._id === action.payload._id
+            );
+            state.entities[elemIndex] = {
+                ...state.entities[elemIndex],
+                ...action.payload
+            };
+        },
+        updateUserFailed: (state, action) => {
+            state.error = action.payload;
         }
     }
 });
@@ -67,11 +79,14 @@ const {
     authRequestSuccess,
     authRequestFailed,
     userCreated,
-    userLoggedOut
+    userLoggedOut,
+    userUpdate,
+    updateUserFailed
 } = actions;
 const authRequested = createAction("users/authRequested");
 const userCreateRequested = createAction("users/userCreateRequested");
 const createUserFailed = createAction("users/createUserFailed");
+const userUpdateRequested = createAction("users/userUpdateRequested");
 
 export const logIn =
     ({ payload, redirect }) =>
@@ -122,6 +137,18 @@ export const logOut = () => (dispatch) => {
     history.push("/");
 };
 
+export function updateUserData(payload) {
+    return async function (dispatch) {
+        dispatch(userUpdateRequested());
+        try {
+            const { content } = await userService.update(payload);
+            dispatch(userUpdate(content));
+        } catch (error) {
+            dispatch(updateUserFailed(error.message));
+        }
+    };
+}
+
 function createUser(payload) {
     return async function (dispatch) {
         dispatch(userCreateRequested());
@@ -136,11 +163,9 @@ function createUser(payload) {
 }
 
 export const loadUsersList = () => async (dispatch) => {
-    console.log("usersRequested():", usersRequested());
     dispatch(usersRequested());
     try {
         const { content } = await userService.get();
-        console.log("usersReceived(content):", usersReceived(content));
         dispatch(usersReceived(content));
     } catch (error) {
         dispatch(usersRequestFailed(error.message));
