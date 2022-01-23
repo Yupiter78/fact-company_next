@@ -139,7 +139,6 @@ export const signUp =
                 })
             );
         } catch (error) {
-            console.log("error:", error);
             dispatch(authRequestFailed(error.message));
         }
     };
