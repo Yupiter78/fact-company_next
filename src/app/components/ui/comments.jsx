@@ -10,13 +10,13 @@ import {
     loadCommentsList
 } from "../../store/comments";
 import { useParams } from "react-router-dom";
-// import { getCurrentUserId } from "../../store/users";
+import { getCurrentUserId } from "../../store/users";
 
 const Comments = () => {
     const dispatch = useDispatch();
     const isLoading = useSelector(getCommentsLoadingStatus());
     const { userId } = useParams();
-    // const currentUserId = useSelector(getCurrentUserId());
+    const currentUserId = useSelector(getCurrentUserId());
     useEffect(() => {
         dispatch(loadCommentsList(userId));
     }, [userId]);
@@ -25,7 +25,9 @@ const Comments = () => {
 
     const handleSubmit = (data) => {
         console.log("data:", data);
-        dispatch(createComment(data));
+        dispatch(
+            createComment({ ...data, pageId: userId, userId: currentUserId })
+        );
         // api.comments
         //     .add({ ...data, pageId: userId, })
         //     .then((data) => setComments([...comments, data]));
