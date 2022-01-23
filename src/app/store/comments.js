@@ -22,6 +22,12 @@ const commentsSlice = createSlice({
         },
         commentCreated: (state, action) => {
             state.entities = [...state.entities, action.payload];
+        },
+        commentRemoved: (state, action) => {
+            console.log("action.payload:", action.payload);
+            state.entities = state.entities.filter(
+                (comment) => comment._id !== action.payload
+            );
         }
     }
 });
@@ -31,10 +37,12 @@ const {
     commentsRequested,
     commentsReceived,
     commentsRequestFiled,
-    commentCreated
+    commentCreated,
+    commentRemoved
 } = actions;
 const commentCreateRequested = createAction("comments/commentCreateRequested");
 const createCommentFailed = createAction("comments/createCommentFailed");
+const removeCommentFailed = createAction("comments/removeCommentFailed");
 
 export function createComment(payload) {
     return async function (dispatch) {
@@ -42,12 +50,25 @@ export function createComment(payload) {
         try {
             const { content } = await commentService.createComment(payload);
             console.log("content_createComment:", content);
-            dispatch(commentCreated(content));
+            if (content.content) {
+                dispatch(commentCreated(content));
+            }
         } catch (error) {
             dispatch(createCommentFailed(error.message));
         }
     };
 }
+
+export const removeComment = (commentId) => async (dispatch) => {
+    try {
+        const { content } = await commentService.removeComment(commentId);
+        if (content === null) {
+            dispatch(commentRemoved(commentId));
+        }
+    } catch (error) {
+        dispatch(removeCommentFailed(error.message));
+    }
+};
 
 export const loadCommentsList = (userId) => async (dispatch) => {
     dispatch(commentsRequested());
