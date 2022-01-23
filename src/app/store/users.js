@@ -33,7 +33,6 @@ const usersSlice = createSlice({
         },
         usersReceived: (state, action) => {
             state.entities = action.payload;
-            console.log("state.entities_usersReceived:", state.entities);
             state.dataLoaded = true;
             state.isLoading = false;
         },
@@ -42,7 +41,6 @@ const usersSlice = createSlice({
             state.isLoading = false;
         },
         authRequestSuccess: (state, action) => {
-            console.log("action:", action);
             state.auth = action.payload;
             state.isLoggedIn = true;
         },
@@ -63,11 +61,6 @@ const usersSlice = createSlice({
                 (el) => el._id === action.payload._id
             );
             state.entities[elemIndex] = action.payload;
-            console.log(
-                "state.entities[elemIndex]:",
-                state.entities[elemIndex]
-            );
-            console.log("state.entities:", state.entities);
         },
         updateUserFailed: (state, action) => {
             state.error = action.payload;

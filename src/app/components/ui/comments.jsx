@@ -24,7 +24,6 @@ const Comments = () => {
     const comments = useSelector(getComments());
 
     const handleSubmit = (data) => {
-        console.log("data:", data);
         const comment = {
             ...data,
             _id: nanoid(),

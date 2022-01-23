@@ -24,7 +24,6 @@ const commentsSlice = createSlice({
             state.entities = [...state.entities, action.payload];
         },
         commentRemoved: (state, action) => {
-            console.log("action.payload:", action.payload);
             state.entities = state.entities.filter(
                 (comment) => comment._id !== action.payload
             );
@@ -49,7 +48,6 @@ export function createComment(payload) {
         dispatch(commentCreateRequested());
         try {
             const { content } = await commentService.createComment(payload);
-            console.log("content_createComment:", content);
             if (content.content) {
                 dispatch(commentCreated(content));
             }
