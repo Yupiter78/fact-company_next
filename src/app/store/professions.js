@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import professionService from "../services/profession.service";
 import { isOutdated } from "../utils/isOutdated";
 
-const professionSlice = createSlice({
+const professionsSlice = createSlice({
     name: "professions",
     initialState: {
         entities: null,
@@ -26,7 +26,7 @@ const professionSlice = createSlice({
     }
 });
 
-const { reducer: professionsReducer, actions } = professionSlice;
+const { reducer: professionsReducer, actions } = professionsSlice;
 const { professionsRequested, professionsReceived, professionsRequestFiled } =
     actions;
 
