@@ -1,6 +1,5 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
 import commentService from "../services/comment.service";
-import { nanoid } from "nanoid";
 
 const commentsSlice = createSlice({
     name: "comments",
@@ -40,13 +39,8 @@ const createCommentFailed = createAction("comments/createCommentFailed");
 export function createComment(payload) {
     return async function (dispatch) {
         dispatch(commentCreateRequested());
-        const comment = {
-            ...payload,
-            _id: nanoid(),
-            created_at: Date.now()
-        };
         try {
-            const { content } = await commentService.createComment(comment);
+            const { content } = await commentService.createComment(payload);
             console.log("content_createComment:", content);
             dispatch(commentCreated(content));
         } catch (error) {

@@ -11,6 +11,7 @@ import {
 } from "../../store/comments";
 import { useParams } from "react-router-dom";
 import { getCurrentUserId } from "../../store/users";
+import { nanoid } from "nanoid";
 
 const Comments = () => {
     const dispatch = useDispatch();
@@ -25,9 +26,14 @@ const Comments = () => {
 
     const handleSubmit = (data) => {
         console.log("data:", data);
-        dispatch(
-            createComment({ ...data, pageId: userId, userId: currentUserId })
-        );
+        const comment = {
+            ...data,
+            _id: nanoid(),
+            pageId: userId,
+            created_at: Date.now(),
+            userId: currentUserId
+        };
+        dispatch(createComment(comment));
         // api.comments
         //     .add({ ...data, pageId: userId, })
         //     .then((data) => setComments([...comments, data]));
