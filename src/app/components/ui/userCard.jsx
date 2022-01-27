@@ -8,24 +8,22 @@ const UserCard = ({ user }) => {
     const dispatch = useDispatch();
     const history = useHistory();
     const currentUserId = useSelector(getCurrentUserId());
-    const [colorFillUp, setColorFillUp] = useState("-fill text-primary");
-    const [colorFillDown, setColorFillDown] = useState(" text-secondary");
+    const [color, setColor] = useState({
+        fillUp: "-fill text-primary",
+        fillDown: " text-secondary"
+    });
     const handleRateUp = () => {
-        setColorFillUp("-fill text-primary");
-        setColorFillDown(" text-secondary");
+        setColor({ fillUp: "-fill text-primary", fillDown: " text-secondary" });
         dispatch(updateUserData({ ...user, rate: user.rate + 1 }));
     };
     const handleRateDown = () => {
-        setColorFillUp(" text-secondary");
-        setColorFillDown("-fill text-primary");
+        setColor({ fillUp: " text-secondary", fillDown: "-fill text-primary" });
         dispatch(updateUserData({ ...user, rate: user.rate - 1 }));
     };
     const handleClick = () => {
         history.push(history.location.pathname + "/edit");
     };
-    // const changeColor = (color) => {
-    //     return color === "primary" ? "-fill text-primary" : " text-secondary";
-    // };
+
     return (
         <div className="card mb-3">
             <div className="card-body">
@@ -52,12 +50,12 @@ const UserCard = ({ user }) => {
                         </p>
                         <div className="text-muted">
                             <i
-                                className={`bi bi-caret-down${colorFillDown}`}
+                                className={`bi bi-caret-down${color.fillDown}`}
                                 role="button"
                                 onClick={handleRateDown}
                             />
                             <i
-                                className={`bi bi-caret-up${colorFillUp}`}
+                                className={`bi bi-caret-up${color.fillUp}`}
                                 role="button"
                                 onClick={handleRateUp}
                             />
