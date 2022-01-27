@@ -1,12 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { getCurrentUserId } from "../../store/users";
+import { useDispatch, useSelector } from "react-redux";
+import { getCurrentUserId, updateUserData } from "../../store/users";
 
 const UserCard = ({ user }) => {
+    const dispatch = useDispatch();
     const history = useHistory();
     const currentUserId = useSelector(getCurrentUserId());
+    const handleRateUp = () => {
+        console.log("user.rate++");
+        console.log("user.rate:", user.rate);
+        dispatch(updateUserData({ ...user, rate: user.rate + 1 }));
+    };
     const handleClick = () => {
         history.push(history.location.pathname + "/edit");
     };
@@ -42,6 +48,7 @@ const UserCard = ({ user }) => {
                             <i
                                 className="bi bi-caret-up text-secondary"
                                 role="button"
+                                onClick={handleRateUp}
                             />
                             <span className="ms-2">{user.rate}</span>
                         </div>

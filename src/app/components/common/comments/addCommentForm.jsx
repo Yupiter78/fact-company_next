@@ -35,6 +35,7 @@ const AddCommentForm = ({ onSubmit }) => {
         e.preventDefault();
         const isValid = validate();
         if (!isValid) return;
+        console.log("data__addCommentForm:", data);
         onSubmit(data);
         clearForm();
     };
