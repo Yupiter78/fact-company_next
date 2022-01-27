@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,14 +8,24 @@ const UserCard = ({ user }) => {
     const dispatch = useDispatch();
     const history = useHistory();
     const currentUserId = useSelector(getCurrentUserId());
+    const [colorFillUp, setColorFillUp] = useState("-fill text-primary");
+    const [colorFillDown, setColorFillDown] = useState(" text-secondary");
     const handleRateUp = () => {
-        console.log("user.rate++");
-        console.log("user.rate:", user.rate);
+        setColorFillUp("-fill text-primary");
+        setColorFillDown(" text-secondary");
         dispatch(updateUserData({ ...user, rate: user.rate + 1 }));
+    };
+    const handleRateDown = () => {
+        setColorFillUp(" text-secondary");
+        setColorFillDown("-fill text-primary");
+        dispatch(updateUserData({ ...user, rate: user.rate - 1 }));
     };
     const handleClick = () => {
         history.push(history.location.pathname + "/edit");
     };
+    // const changeColor = (color) => {
+    //     return color === "primary" ? "-fill text-primary" : " text-secondary";
+    // };
     return (
         <div className="card mb-3">
             <div className="card-body">
@@ -42,11 +52,12 @@ const UserCard = ({ user }) => {
                         </p>
                         <div className="text-muted">
                             <i
-                                className="bi bi-caret-down-fill text-primary"
+                                className={`bi bi-caret-down${colorFillDown}`}
                                 role="button"
+                                onClick={handleRateDown}
                             />
                             <i
-                                className="bi bi-caret-up text-secondary"
+                                className={`bi bi-caret-up${colorFillUp}`}
                                 role="button"
                                 onClick={handleRateUp}
                             />
