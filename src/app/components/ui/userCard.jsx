@@ -13,10 +13,24 @@ const UserCard = ({ user }) => {
         fillDown: " text-secondary"
     });
     const handleRateUp = () => {
+        if (user.rate === 5) {
+            setColor({
+                fillUp: "-fill text-danger",
+                fillDown: "-fill text-primary"
+            });
+            return;
+        }
         setColor({ fillUp: "-fill text-primary", fillDown: " text-secondary" });
         dispatch(updateUserData({ ...user, rate: user.rate + 1 }));
     };
     const handleRateDown = () => {
+        if (user.rate === 0) {
+            setColor({
+                fillUp: "-fill text-primary",
+                fillDown: "-fill text-danger"
+            });
+            return;
+        }
         setColor({ fillUp: " text-secondary", fillDown: "-fill text-primary" });
         dispatch(updateUserData({ ...user, rate: user.rate - 1 }));
     };
