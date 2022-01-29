@@ -37,6 +37,17 @@ const EditUserPage = () => {
 
     const [errors, setErrors] = useState({});
 
+    const handleChangeAvatar = () => {
+        const imageSrc = `https://avatars.dicebear.com/api/avataaars/${(
+            Math.random() + 1
+        )
+            .toString(36)
+            .substring(7)}.svg`;
+        console.log("imageSrc:", imageSrc);
+        console.log("data:", data);
+        dispatch(updateUserData({ ...data, image: imageSrc }));
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const isValid = validate();
@@ -119,56 +130,70 @@ const EditUserPage = () => {
             <div className="row">
                 <div className="col-md-6 offset-md-3 shadow p-4">
                     {!isLoading && Object.keys(professions).length > 0 ? (
-                        <form onSubmit={handleSubmit}>
-                            <TextField
-                                label="Имя"
-                                name="name"
-                                value={data.name}
-                                onChange={handleChange}
-                                error={errors.name}
-                            />
-                            <TextField
-                                label="Электронная почта"
-                                name="email"
-                                value={data.email}
-                                onChange={handleChange}
-                                error={errors.email}
-                            />
-                            <SelectField
-                                label="Выбери свою профессию"
-                                defaultOption="Choose..."
-                                name="profession"
-                                options={professionsList}
-                                onChange={handleChange}
-                                value={data.profession}
-                                error={errors.profession}
-                            />
-                            <RadioField
-                                options={[
-                                    { name: "Male", value: "male" },
-                                    { name: "Female", value: "female" },
-                                    { name: "Other", value: "other" }
-                                ]}
-                                value={data.sex}
-                                name="sex"
-                                onChange={handleChange}
-                                label="Выберите ваш пол"
-                            />
-                            <MultiSelectField
-                                defaultValue={data.qualities}
-                                options={qualitiesList}
-                                onChange={handleChange}
-                                name="qualities"
-                                label="Выберите ваши качесвта"
+                        <>
+                            <img
+                                src={data.image}
+                                className="rounded-circle"
+                                width="150"
+                                alt=""
                             />
                             <button
-                                type="submit"
-                                disabled={!isValid}
-                                className="btn btn-primary w-100 mx-auto"
+                                className="btn btn-primary"
+                                onClick={handleChangeAvatar}
                             >
-                                Обновить
+                                Change avatar
                             </button>
-                        </form>
+                            <form onSubmit={handleSubmit}>
+                                <TextField
+                                    label="Имя"
+                                    name="name"
+                                    value={data.name}
+                                    onChange={handleChange}
+                                    error={errors.name}
+                                />
+                                <TextField
+                                    label="Электронная почта"
+                                    name="email"
+                                    value={data.email}
+                                    onChange={handleChange}
+                                    error={errors.email}
+                                />
+                                <SelectField
+                                    label="Выбери свою профессию"
+                                    defaultOption="Choose..."
+                                    name="profession"
+                                    options={professionsList}
+                                    onChange={handleChange}
+                                    value={data.profession}
+                                    error={errors.profession}
+                                />
+                                <RadioField
+                                    options={[
+                                        { name: "Male", value: "male" },
+                                        { name: "Female", value: "female" },
+                                        { name: "Other", value: "other" }
+                                    ]}
+                                    value={data.sex}
+                                    name="sex"
+                                    onChange={handleChange}
+                                    label="Выберите ваш пол"
+                                />
+                                <MultiSelectField
+                                    defaultValue={data.qualities}
+                                    options={qualitiesList}
+                                    onChange={handleChange}
+                                    name="qualities"
+                                    label="Выберите ваши качесвта"
+                                />
+                                <button
+                                    type="submit"
+                                    disabled={!isValid}
+                                    className="btn btn-primary w-100 mx-auto"
+                                >
+                                    Обновить
+                                </button>
+                            </form>
+                        </>
                     ) : (
                         "Loading..."
                     )}
