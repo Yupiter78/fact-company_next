@@ -36,17 +36,7 @@ const EditUserPage = () => {
     }));
 
     const [errors, setErrors] = useState({});
-
-    const handleChangeAvatar = () => {
-        const imageSrc = `https://avatars.dicebear.com/api/avataaars/${(
-            Math.random() + 1
-        )
-            .toString(36)
-            .substring(7)}.svg`;
-        console.log("imageSrc:", imageSrc);
-        console.log("data:", data);
-        dispatch(updateUserData({ ...data, image: imageSrc }));
-    };
+    console.log("data_editeUserPage:", data);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -55,6 +45,7 @@ const EditUserPage = () => {
         dispatch(
             updateUserData({
                 ...data,
+                image: imageSource || data.image,
                 qualities: data.qualities.map((q) => q.value)
             })
         );
@@ -124,6 +115,20 @@ const EditUserPage = () => {
         return Object.keys(errors).length === 0;
     };
     const isValid = Object.keys(errors).length === 0;
+    const [imageSource, setImageSource] = useState("");
+
+    const handleChangeAvatar = () => {
+        setImageSource(
+            `https://avatars.dicebear.com/api/avataaars/${(Math.random() + 1)
+                .toString(36)
+                .substring(7)}.svg`
+        );
+    };
+    console.log("imageSource:", imageSource);
+    if (!isLoading) {
+        console.log("imageSource || data.image", imageSource || data.image);
+    }
+
     return (
         <div className="container mt-5">
             <BackHistoryButton />
@@ -132,8 +137,8 @@ const EditUserPage = () => {
                     {!isLoading && Object.keys(professions).length > 0 ? (
                         <>
                             <img
-                                src={data.image}
-                                className="rounded-circle"
+                                src={imageSource || data.image}
+                                className="rounded-circle mb-3"
                                 width="150"
                                 alt=""
                             />

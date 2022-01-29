@@ -13,6 +13,7 @@ const UserCard = ({ user }) => {
         fillDown: " text-secondary"
     });
     const handleRateUp = () => {
+        console.log("user:", user);
         if (user.rate === 5) {
             setColor({
                 fillUp: "-fill text-danger",

@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 const Quality = ({ _id, color, name }) => {
+    console.log("_id, color, name:", _id, color, name);
     return (
         <span className={"badge m-1 bg-" + color} key={_id}>
             {name}

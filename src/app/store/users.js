@@ -148,6 +148,7 @@ export function updateUserData(payload) {
         try {
             const { content } = await userService.update(payload);
             dispatch(userUpdateSuccessful(content));
+            console.log("content:", content);
             history.push(`/users/${content._id}`);
         } catch (error) {
             dispatch(updateUserFailed(error.message));
